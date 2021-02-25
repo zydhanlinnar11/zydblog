@@ -1,5 +1,4 @@
 const express = require('express')
-const post = require('../../models/post')
 const router = express()
 const BlogPost = require('../../models/post')
 
