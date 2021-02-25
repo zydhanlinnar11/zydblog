@@ -21,4 +21,4 @@ app.use(express.json())
 const blogPostsRouter = require('./routes/blog/posts')
 app.use('/blog/posts', blogPostsRouter)
 
-app.listen(process.env.PORT || 3000)
+app.listen(process.env.PORT || 1111)
