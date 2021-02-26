@@ -36,7 +36,7 @@ router.post('/', async (req, res) => {
 })
 
 // Update one
-router.patch('/:id', getBlogPost, async (req, res) => {
+router.patch('/:slug', getBlogPostBySlug, async (req, res) => {
   if (req.body.title != null) res.blogpost.title = req.body.title
   if (req.body.date != null) res.blogpost.date = req.body.date
   if (req.body.thumbnailLink != null)
@@ -54,7 +54,7 @@ router.patch('/:id', getBlogPost, async (req, res) => {
 })
 
 // Delete one
-router.delete('/:id', getBlogPost, async (req, res) => {
+router.delete('/:id', getBlogPostBySlug, async (req, res) => {
   try {
     await res.blogpost.remove()
     res.json({ message: 'Post deleted' })
@@ -62,19 +62,6 @@ router.delete('/:id', getBlogPost, async (req, res) => {
     res.status(500).json({ message: error.message })
   }
 })
-
-async function getBlogPost(req, res, next) {
-  try {
-    blogpost = await BlogPost.findById(req.params.id)
-    if (blogpost == null)
-      return res.status(404).json({ message: 'Cannot find post.' })
-  } catch (error) {
-    return res.status(500).json({ message: error.message })
-  }
-
-  res.blogpost = blogpost
-  next()
-}
 
 async function getBlogPostBySlug(req, res, next) {
   try {
