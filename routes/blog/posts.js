@@ -7,13 +7,13 @@ router.get('/', async (req, res) => {
   try {
     const blogposts = await BlogPost.find()
     res.json(blogposts)
-  } catch (err) {
-    res.status(500).json({ message: err.message })
+  } catch (error) {
+    res.status(500).json({ message: error.message })
   }
 })
 
 // Get one blog post content
-router.get('/:id', getBlogPost, (req, res) => {
+router.get('/:slug', getBlogPostBySlug, (req, res) => {
   res.json(res.blogpost)
 })
 
@@ -23,15 +23,15 @@ router.post('/', async (req, res) => {
     title: req.body.title,
     date: req.body.date,
     thumbnailLink: req.body.thumbnailLink,
-    previewContent: req.body.previewContent,
-    contentLink: req.body.contentLink,
+    description: req.body.description,
+    markdown: req.body.markdown,
   })
 
   try {
     const newPost = await blogpost.save()
     res.status(201).json(newPost)
   } catch (error) {
-    res.status(400).json({ message: err.message })
+    res.status(400).json({ message: error.message })
   }
 })
 
@@ -41,10 +41,9 @@ router.patch('/:id', getBlogPost, async (req, res) => {
   if (req.body.date != null) res.blogpost.date = req.body.date
   if (req.body.thumbnailLink != null)
     res.blogpost.thumbnailLink = req.body.thumbnailLink
-  if (req.body.previewContent != null)
-    res.blogpost.previewContent = req.body.previewContent
-  if (req.body.contentLink != null)
-    res.blogpost.contentLink = req.body.contentLink
+  if (req.body.description != null)
+    res.blogpost.description = req.body.description
+  if (req.body.markdown != null) res.blogpost.markdown = req.body.markdown
 
   try {
     const updatedBlogPost = await res.blogpost.save()
@@ -67,6 +66,19 @@ router.delete('/:id', getBlogPost, async (req, res) => {
 async function getBlogPost(req, res, next) {
   try {
     blogpost = await BlogPost.findById(req.params.id)
+    if (blogpost == null)
+      return res.status(404).json({ message: 'Cannot find post.' })
+  } catch (error) {
+    return res.status(500).json({ message: error.message })
+  }
+
+  res.blogpost = blogpost
+  next()
+}
+
+async function getBlogPostBySlug(req, res, next) {
+  try {
+    blogpost = await BlogPost.findOne({ slug: req.params.slug })
     if (blogpost == null)
       return res.status(404).json({ message: 'Cannot find post.' })
   } catch (error) {

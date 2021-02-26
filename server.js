@@ -23,4 +23,7 @@ app.use(cors())
 const blogPostsRouter = require('./routes/blog/posts')
 app.use('/blog/posts', blogPostsRouter)
 
+const adminRouter = require('./routes/blog/admin')
+app.use('/blog/admin', adminRouter)
+
 app.listen(process.env.PORT || 1111)
