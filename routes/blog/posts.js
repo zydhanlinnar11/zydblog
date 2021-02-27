@@ -5,7 +5,7 @@ const BlogPost = require('../../models/post')
 // Get all blog post
 router.get('/', async (req, res) => {
   try {
-    const blogposts = await BlogPost.find()
+    const blogposts = await BlogPost.find().sort({ date: 'desc' })
     res.json(blogposts)
   } catch (error) {
     res.status(500).json({ message: error.message })
@@ -21,7 +21,7 @@ router.get('/:slug', getBlogPostBySlug, (req, res) => {
 router.post('/', async (req, res) => {
   const blogpost = new BlogPost({
     title: req.body.title,
-    date: req.body.date,
+    date: Date.now(),
     thumbnailLink: req.body.thumbnailLink,
     description: req.body.description,
     markdown: req.body.markdown,
@@ -29,7 +29,7 @@ router.post('/', async (req, res) => {
 
   try {
     const newPost = await blogpost.save()
-    res.status(201).json(newPost)
+    res.redirect(`${process.env.BLOG_LINK}/${newPost.slug}`)
   } catch (error) {
     res.status(400).json({ message: error.message })
   }
@@ -47,17 +47,17 @@ router.patch('/:slug', getBlogPostBySlug, async (req, res) => {
 
   try {
     const updatedBlogPost = await res.blogpost.save()
-    res.json(updatedBlogPost)
+    res.redirect(`${process.env.BLOG_LINK}/${updatedBlogPost.slug}`)
   } catch (error) {
     res.status(400).json({ message: error.message })
   }
 })
 
 // Delete one
-router.delete('/:id', getBlogPostBySlug, async (req, res) => {
+router.delete('/:slug', getBlogPostBySlug, async (req, res) => {
   try {
     await res.blogpost.remove()
-    res.json({ message: 'Post deleted' })
+    res.redirect('/blog/admin/manage-posts')
   } catch (error) {
     res.status(500).json({ message: error.message })
   }

@@ -1,0 +1,53 @@
+<div class="form-group">
+  <label for="title">Title:</label>
+  <input
+    value="<%= article.title %>"
+    class="form-control"
+    type="text"
+    name="title"
+    id="title"
+    placeholder="This is The Post Title"
+    required
+  />
+</div>
+
+<div class="form-group">
+  <label for="description">Description:</label>
+  <input
+    value="<%= article.description %>"
+    class="form-control"
+    type="text"
+    name="description"
+    id="description"
+    placeholder="This is The Post Description"
+    required
+  />
+</div>
+
+<div class="form-group">
+  <label for="thumbnailLink">Thumbnail link:</label>
+  <input
+    value="<%= article.thumbnailLink %>"
+    class="form-control"
+    type="text"
+    name="thumbnailLink"
+    id="thumbnailLink"
+    placeholder="https://something.com/pic.jpg"
+    required
+  />
+</div>
+
+<div class="form-group">
+  <label for="markdown">Content (markdown):</label>
+  <textarea
+    required
+    class="form-control"
+    name="markdown"
+    id="markdown"
+    rows="10"
+    placeholder="What is your post content? Write it here with markdown style"
+  >
+<%= article.markdown %></textarea
+  >
+  <br />
+</div>
