@@ -5,6 +5,9 @@ const express = require('express')
 const app = express()
 const mongoose = require('mongoose')
 const methodOverride = require('method-override')
+const flash = require('express-flash')
+const session = require('express-session')
+const users = require('./models/user')
 
 mongoose
   .connect(process.env.DATABASE_URL, {
@@ -38,5 +41,46 @@ app.use(cors())
 
 const blogRouter = require('./routes/blog')
 app.use('/blog', blogRouter)
+
+const passport = require('passport')
+const initializePassport = require('./routes/blog/passport-config')
+initializePassport(
+  passport,
+  async (username) => await users.findOne({ username: username })
+)
+app.use(flash())
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+  })
+)
+app.use(passport.initialize())
+app.use(passport.session())
+
+app.get('/blog/admin', checkAuthenticated, (req, res) => {
+  res.redirect('/blog/admin/dashboard')
+})
+
+const LOGIN_PAGE = '/blog/admin/login'
+app.post(
+  LOGIN_PAGE,
+  passport.authenticate('local', {
+    successRedirect: '/blog/admin',
+    failureRedirect: LOGIN_PAGE,
+    failureFlash: true,
+  })
+)
+
+function checkAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) return next()
+  res.redirect(LOGIN_PAGE)
+}
+
+function checkNotAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) return res.redirect(LOGIN_PAGE)
+  next()
+}
 
 app.listen(process.env.PORT || 1111)

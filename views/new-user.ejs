@@ -1,0 +1,20 @@
+<% if (success == 'yes') { %>
+<div class="alert alert-success" role="alert">
+  <i class="far fa-check-circle"></i>
+  Successfully create user!
+</div>
+<% } %> <% if (success == 'no') { %>
+<div class="alert alert-danger" role="alert">Failed to create user!</div>
+<% } %>
+
+<div class="row" style="width: 100%">
+  <div class="col-md-3"></div>
+
+  <div class="col-md-6">
+    <form action="/blog/admin/new-user" method="POST">
+      <%- include('./_register_login_form_fields') %>
+      <button class="btn btn-primary col-12">Add new user</button>
+    </form>
+    <div class="col-md-3"></div>
+  </div>
+</div>
