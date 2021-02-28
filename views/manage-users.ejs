@@ -28,13 +28,13 @@
               class="col-12"
               style="padding: 0"
             >
-              <% if (user.username == process.env.BLOG_OWNER ) { %>
+              <% if (user.username == blogOwner ) { %>
               <button class="btn btn-danger col-12" disabled>
-                Can't delete yourself
+                Can't delete blog owner
               </button>
               <% } else if (user.username == currentUserName) { %>
               <button class="btn btn-danger col-12" disabled>
-                Can't delete blog owner
+                Can't delete yourself
               </button>
               <% } else { %>
               <button class="btn btn-danger col-12">Delete user</button>

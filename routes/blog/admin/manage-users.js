@@ -14,6 +14,7 @@ module.exports = (checkAuthenticated) => {
       loggedIn: true,
       currentUserName: currentUserName.username,
       success: '',
+      blogOwner: process.env.BLOG_OWNER,
     })
   })
 
@@ -31,6 +32,7 @@ module.exports = (checkAuthenticated) => {
         loggedIn: true,
         currentUserName: currentUserName.username,
         success: 'yes',
+        blogOwner: process.env.BLOG_OWNER,
       })
     } catch (error) {
       const users = await Users.find().sort({ date: 'desc' })
@@ -42,6 +44,7 @@ module.exports = (checkAuthenticated) => {
         loggedIn: true,
         currentUserName: currentUserName.username,
         success: 'no',
+        blogOwner: process.env.BLOG_OWNER,
       })
     }
   })
