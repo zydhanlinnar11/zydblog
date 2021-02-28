@@ -25,6 +25,7 @@ router.post('/', async (req, res) => {
     thumbnailLink: req.body.thumbnailLink,
     description: req.body.description,
     markdown: req.body.markdown,
+    author: req.body.author,
   })
 
   try {
@@ -44,6 +45,7 @@ router.patch('/:slug', getBlogPostBySlug, async (req, res) => {
   if (req.body.description != null)
     res.blogpost.description = req.body.description
   if (req.body.markdown != null) res.blogpost.markdown = req.body.markdown
+  if (req.body.author != null) res.blogpost.author = req.body.author
 
   try {
     const updatedBlogPost = await res.blogpost.save()

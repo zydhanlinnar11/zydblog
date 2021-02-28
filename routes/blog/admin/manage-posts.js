@@ -10,6 +10,7 @@ module.exports = (checkAuthenticated) => {
       blogName: process.env.BLOG_NAME,
       mainTitle: 'Manage posts',
       articles: articles,
+      currentUserName: (await req.user).username,
       loggedIn: true,
     })
   })

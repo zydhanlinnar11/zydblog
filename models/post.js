@@ -36,6 +36,10 @@ const blogPostSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  author: {
+    type: String,
+    required: true,
+  },
 })
 
 blogPostSchema.pre('validate', function (next) {

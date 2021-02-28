@@ -10,6 +10,7 @@ module.exports = (checkAuthenticated) => {
       mainTitle: 'Edit post',
       article: await BlogPost.findOne({ slug: req.params.slug }),
       loggedIn: true,
+      author: (await req.user).username,
     })
   })
   return router

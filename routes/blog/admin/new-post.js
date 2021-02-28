@@ -3,12 +3,13 @@ module.exports = (checkAuthenticated) => {
   const BlogPost = require('../../../models/post')
   const router = express.Router()
 
-  router.get('/', checkAuthenticated, (req, res) => {
+  router.get('/', checkAuthenticated, async (req, res) => {
     res.render('new-post', {
       title: 'New Post',
       blogName: process.env.BLOG_NAME,
       mainTitle: 'Create new post',
       article: new BlogPost(),
+      author: (await req.user).username,
       loggedIn: true,
     })
   })
