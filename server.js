@@ -28,19 +28,12 @@ app.set('layout', 'layouts/layout')
 app.use(expressLayouts)
 app.use(express.static('public'))
 
-app.get('/', (req, res) => {
-  res.redirect(process.env.BLOG_LINK)
-})
-
 const db = mongoose.connection
 db.on('error', (error) => console.error(error))
 db.once('open', () => console.log('Connected to database'))
 
 app.use(express.json())
 app.use(cors())
-
-const blogRouter = require('./routes/blog')
-app.use('/blog', blogRouter)
 
 const passport = require('passport')
 const initializePassport = require('./routes/blog/passport-config')
@@ -59,10 +52,6 @@ app.use(
 app.use(passport.initialize())
 app.use(passport.session())
 
-app.get('/blog/admin', checkAuthenticated, (req, res) => {
-  res.redirect('/blog/admin/dashboard')
-})
-
 const LOGIN_PAGE = '/blog/admin/login'
 app.post(
   LOGIN_PAGE,
@@ -79,8 +68,18 @@ function checkAuthenticated(req, res, next) {
 }
 
 function checkNotAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) return res.redirect(LOGIN_PAGE)
+  if (req.isAuthenticated()) return res.redirect('/blog/admin')
   next()
 }
+
+app.get('/', async (req, res) => {
+  res.redirect('/blog/admin')
+})
+
+const blogRouter = require('./routes/blog')
+app.use(
+  '/blog',
+  blogRouter(checkAuthenticated, checkNotAuthenticated, passport)
+)
 
 app.listen(process.env.PORT || 1111)

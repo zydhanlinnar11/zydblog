@@ -27,6 +27,17 @@
               >Dashboard</a
             >
           </div>
+          <% if (loggedIn) { %>
+          <form
+            style="padding: 0"
+            action="/blog/admin/logout?_method=DELETE"
+            method="POST"
+          >
+            <button type="submit" class="nav-button">
+              <p class="nav-button-text">Log out</p>
+            </button>
+          </form>
+          <% } %>
         </nav>
       </header>
     </div>

@@ -27,15 +27,22 @@ header {
   display: flex;
 }
 
+nav {
+  display: flex;
+}
+
 .nav-button {
   height: 64px;
   width: 108px;
   display: flex;
-  transition: background-color 0.1s ease-in;
+  border: none;
+  text-align: center;
+  background: rgba(0, 0, 0, 0);
+  transition: background 0.1s ease-in;
 }
 
 .nav-button:hover {
-  background-color: #3700b3;
+  background: #3700b3;
 }
 
 .nav-button-text {

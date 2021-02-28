@@ -1,14 +1,18 @@
-const express = require('express')
-const router = express()
+module.exports = (checkAuthenticated, checkNotAuthenticated, passport) => {
+  const express = require('express')
+  const router = express()
 
-const blogPostsRouter = require('./blog/posts')
-router.use('/posts', blogPostsRouter)
+  const blogPostsRouter = require('./blog/posts')
+  router.use('/posts', blogPostsRouter)
 
-const adminRouter = require('./blog/admin')
-router.use('/admin', adminRouter)
+  const adminRouter = require('./blog/admin')
+  router.use(
+    '/admin',
+    adminRouter(checkAuthenticated, checkNotAuthenticated, passport)
+  )
 
-router.get('/', (req, res) => {
-  res.redirect(process.env.BLOG_LINK)
-})
-
-module.exports = router
+  router.get('/', (req, res) => {
+    res.redirect('/blog/admin')
+  })
+  return router
+}

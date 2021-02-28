@@ -1,6 +1,6 @@
 <div id="main-content">
   <div class="row">
-    <div class="col-md-3">
+    <div style="margin-bottom: 16px" class="col-md-3">
       <div class="card col-12">
         <div class="card-body">
           <h5 class="card-title">Manage posts</h5>
@@ -10,7 +10,7 @@
       </div>
     </div>
 
-    <div class="col-md-3">
+    <div style="margin-bottom: 16px" class="col-md-3">
       <div class="card col-12">
         <div class="card-body">
           <h5 class="card-title">Create post</h5>
@@ -20,12 +20,32 @@
       </div>
     </div>
 
-    <div class="col-md-3">
+    <div style="margin-bottom: 16px" class="col-md-3">
       <div class="card col-12">
         <div class="card-body">
           <h5 class="card-title">Create new user</h5>
           <p class="card-text">Add new admin to your blog.</p>
           <a href="./new-user" class="btn btn-primary">Create new admin</a>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-bottom: 16px" class="col-md-3">
+      <div class="card col-12">
+        <div class="card-body">
+          <h5 class="card-title">Manage admins</h5>
+          <p class="card-text">Manage your blog administrators.</p>
+          <a href="./manage-users" class="btn btn-primary">Manage admin</a>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-bottom: 16px" class="col-md-3">
+      <div class="card col-12">
+        <div class="card-body">
+          <h5 class="card-title">Open blog</h5>
+          <p class="card-text">See your beautiful blog.</p>
+          <a href='<%= process.env.BLOG_LINK %> ' class="btn btn-primary">Open blog</a>
         </div>
       </div>
     </div>

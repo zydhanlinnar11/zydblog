@@ -1,12 +1,14 @@
-const express = require('express')
-const router = express.Router()
+module.exports = (checkAuthenticated) => {
+  const express = require('express')
+  const router = express.Router()
 
-router.get('/', (req, res) => {
-  res.render('dashboard', {
-    title: 'Dashboard',
-    blogName: process.env.BLOG_NAME,
-    mainTitle: 'Dashboard',
+  router.get('/', checkAuthenticated, (req, res) => {
+    res.render('dashboard', {
+      title: 'Dashboard',
+      blogName: process.env.BLOG_NAME,
+      mainTitle: 'Dashboard',
+      loggedIn: true,
+    })
   })
-})
-
-module.exports = router
+  return router
+}

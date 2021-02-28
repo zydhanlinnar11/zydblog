@@ -1,12 +1,14 @@
-const express = require('express')
-const router = express.Router()
+module.exports = (checkNotAuthenticated) => {
+  const express = require('express')
+  const router = express.Router()
 
-router.get('/', (req, res) => {
-  res.render('login', {
-    title: 'Login',
-    blogName: process.env.BLOG_NAME,
-    mainTitle: 'Login',
+  router.get('/', checkNotAuthenticated, (req, res) => {
+    res.render('login', {
+      title: 'Login',
+      blogName: process.env.BLOG_NAME,
+      mainTitle: 'Login',
+      loggedIn: false,
+    })
   })
-})
-
-module.exports = router
+  return router
+}
