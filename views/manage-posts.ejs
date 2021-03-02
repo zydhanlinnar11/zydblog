@@ -33,50 +33,42 @@
               >Edit post</a
             >
             <div style="height: 8px" class="col-xxl-2"></div>
-            <div class="row">
-              <form
-                action="/blog/posts/<%= element.slug %>?_method=DELETE"
-                method="POST"
-                class="col-12"
-                style="padding: 0"
+            <form
+              action="/blog/posts/<%= element.slug %>?_method=DELETE"
+              method="POST"
+              class="col-12"
+              style="padding: 0"
+            >
+              <button
+                class="btn btn-danger col-12"
+                disabled
+                aria-disabled="true"
               >
-                <button
-                  class="btn btn-danger col-12"
-                  disabled
-                  aria-disabled="true"
-                >
-                  Delete post
-                </button>
-              </form>
-            </div>
+                Delete post
+              </button>
+            </form>
             <% } else { %>
-            <div class="row">
-              <a
-                href="./edit-post/<%= element.slug %> "
-                class="btn btn-primary col-12"
-                >Edit post</a
-              >
-            </div>
+            <a
+              href="./edit-post/<%= element.slug %> "
+              class="btn btn-primary col-12"
+              >Edit post</a
+            >
             <div style="height: 8px" class="col-xxl-2"></div>
-            <div class="row">
-              <form
-                action="/blog/posts/<%= element.slug %>?_method=DELETE"
-                method="POST"
-                class="col-12"
-                style="padding: 0"
-              >
-                <button class="btn btn-danger col-12">Delete post</button>
-              </form>
-            </div>
+            <form
+              action="/blog/posts/<%= element.slug %>?_method=DELETE"
+              method="POST"
+              class="col-12"
+              style="padding: 0"
+            >
+              <button class="btn btn-danger col-12">Delete post</button>
+            </form>
             <% } %>
             <div style="height: 8px" class="col-xxl-2"></div>
-            <div class="row">
-              <a
-                href="https://zydblog.000webhostapp.com/<%= element.slug %> "
-                class="btn btn-success col-12"
-                >Open post</a
-              >
-            </div>
+            <a
+              href="https://zydblog.000webhostapp.com/<%= element.slug %> "
+              class="btn btn-success col-12"
+              >Open post</a
+            >
           </div>
         </div>
       </div>
