@@ -3,6 +3,7 @@ module.exports = function (checkAuthenticated) {
   const router = express()
   const BlogPost = require('../../models/post')
   const slugify = require('slugify')
+  const User = require('../../models/user')
 
   async function isThereAnySlugConflict(slug) {
     return (await BlogPost.findOne({ slug: slug })) != null
@@ -15,7 +16,6 @@ module.exports = function (checkAuthenticated) {
       thumbnailPath: blogpost.thumbnailPath,
       description: blogpost.description,
       slug: blogpost.slug,
-      author: blogpost.author,
     }
   }
 
@@ -30,14 +30,14 @@ module.exports = function (checkAuthenticated) {
   })
 
   // Get one blog post content
-  router.get('/:slug', getBlogPostBySlug, (req, res) => {
+  router.get('/:slug', getBlogPostBySlug, async (req, res) => {
     res.json({
       title: res.blogpost.title,
       date: res.blogpost.date,
       thumbnailPath: res.blogpost.thumbnailPath,
       description: res.blogpost.description,
       slug: res.blogpost.slug,
-      author: res.blogpost.author,
+      author: (await User.findById(res.blogpost.author)).username,
       sanitizedHtml: res.blogpost.sanitizedHtml,
     })
   })

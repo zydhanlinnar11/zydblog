@@ -5,9 +5,6 @@ module.exports = (checkAuthenticated, checkNotAuthenticated, passport) => {
   const blogPostsRouter = require('./blog/posts')
   router.use('/posts', blogPostsRouter(checkAuthenticated))
 
-  const usersRouter = require('./blog/users')
-  router.use('/users', usersRouter)
-
   const adminRouter = require('./blog/admin')
   router.use(
     '/admin',
