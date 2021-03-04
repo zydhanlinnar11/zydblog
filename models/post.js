@@ -22,6 +22,14 @@ const blogPostSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  cover: {
+    type: Buffer,
+    required: true,
+  },
+  coverType: {
+    type: String,
+    required: true,
+  },
   description: {
     type: String,
     required: true,
@@ -56,6 +64,13 @@ blogPostSchema.virtual('thumbnailPath').get(function () {
     return `data:${
       this.thumbnailType
     };charset=utf-8;base64,${this.thumbnail.toString('base64')}`
+})
+
+blogPostSchema.virtual('coverPath').get(function () {
+  if (this.cover != null && this.coverType != null)
+    return `data:${this.coverType};charset=utf-8;base64,${this.cover.toString(
+      'base64'
+    )}`
 })
 
 module.exports = mongoose.model('Blog Post', blogPostSchema)

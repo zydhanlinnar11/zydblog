@@ -4,6 +4,7 @@ module.exports = function (checkAuthenticated) {
   const BlogPost = require('../../models/post')
   const slugify = require('slugify')
   const User = require('../../models/user')
+  const sharp = require('sharp')
 
   async function isThereAnySlugConflict(slug) {
     return (await BlogPost.findOne({ slug: slug })) != null
@@ -34,9 +35,7 @@ module.exports = function (checkAuthenticated) {
     res.json({
       title: res.blogpost.title,
       date: res.blogpost.date,
-      thumbnailPath: res.blogpost.thumbnailPath,
-      description: res.blogpost.description,
-      slug: res.blogpost.slug,
+      coverPath: res.blogpost.coverPath,
       author: (await User.findById(res.blogpost.author)).username,
       sanitizedHtml: res.blogpost.sanitizedHtml,
     })
@@ -55,7 +54,8 @@ module.exports = function (checkAuthenticated) {
         strict: true,
       }),
     })
-    saveThumbnail(blogpost, req.body.thumbnail)
+    await saveCover(blogpost, req.body.cover)
+    await saveThumbnail(blogpost, req.body.cover)
 
     try {
       if (await isThereAnySlugConflict(blogpost.slug))
@@ -83,10 +83,10 @@ module.exports = function (checkAuthenticated) {
         if (await isThereAnySlugConflict(res.blogpost.slug))
           isSlugConflict = true
       }
+
       if (req.body.description != null)
         res.blogpost.description = req.body.description
       if (req.body.markdown != null) res.blogpost.markdown = req.body.markdown
-
       try {
         if (isSlugConflict) throw { message: 'Slug conflict' }
         const updatedBlogPost = await res.blogpost.save()
@@ -112,14 +112,30 @@ module.exports = function (checkAuthenticated) {
     }
   )
 
-  function saveThumbnail(blogpost, thumbnailEncoded) {
+  const WEBP_MIME = 'image/webp'
+  async function saveCover(blogpost, coverEncoded) {
     const imageMimeTypes = ['image/jpeg', 'image/png']
-    if (thumbnailEncoded == null) return
-    const thumbnail = JSON.parse(thumbnailEncoded)
-    if (thumbnail != null && imageMimeTypes.includes(thumbnail.type)) {
-      blogpost.thumbnail = new Buffer.from(thumbnail.data, 'base64')
-      blogpost.thumbnailType = thumbnail.type
+    const COVER_WIDTH = 2880 // 75% of 4K
+
+    if (coverEncoded == null) return
+    const cover = JSON.parse(coverEncoded)
+    if (cover != null && imageMimeTypes.includes(cover.type)) {
+      blogpost.cover = new Buffer.from(cover.data, 'base64')
+      blogpost.cover = new Buffer.from(
+        await sharp(blogpost.cover).webp().resize(COVER_WIDTH, null).toBuffer(),
+        'base64'
+      )
+      blogpost.coverType = WEBP_MIME
     }
+  }
+
+  async function saveThumbnail(blogpost, cover) {
+    const THUMB_HEIGHT = 480 // 160px 3x upscaled for xxhdpi devices
+    blogpost.thumbnail = new Buffer.from(
+      await sharp(cover).webp().resize(null, THUMB_HEIGHT).toBuffer(),
+      'base64'
+    )
+    blogpost.thumbnailType = WEBP_MIME
   }
 
   async function getBlogPostBySlug(req, res, next) {
