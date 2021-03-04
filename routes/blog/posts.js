@@ -7,7 +7,7 @@ module.exports = function (checkAuthenticated) {
     return {
       title: blogpost.title,
       date: blogpost.date,
-      thumbnailLink: blogpost.thumbnailLink,
+      thumbnail: blogpost.thumbnail,
       description: blogpost.description,
       slug: blogpost.slug,
       author: blogpost.author,
@@ -34,11 +34,11 @@ module.exports = function (checkAuthenticated) {
     const blogpost = new BlogPost({
       title: req.body.title,
       date: Date.now(),
-      thumbnailLink: req.body.thumbnailLink,
       description: req.body.description,
       markdown: req.body.markdown,
       author: req.body.author,
     })
+    saveThumbnail(blogpost, req.body.thumbnail)
 
     try {
       const newPost = await blogpost.save()
@@ -55,8 +55,8 @@ module.exports = function (checkAuthenticated) {
     getBlogPostBySlug,
     async (req, res) => {
       if (req.body.title != null) res.blogpost.title = req.body.title
-      if (req.body.thumbnailLink != null)
-        res.blogpost.thumbnailLink = req.body.thumbnailLink
+      if (req.body.thumbnail != null)
+        saveThumbnail(res.blogpost, req.body.thumbnail)
       if (req.body.description != null)
         res.blogpost.description = req.body.description
       if (req.body.markdown != null) res.blogpost.markdown = req.body.markdown
@@ -85,6 +85,16 @@ module.exports = function (checkAuthenticated) {
       }
     }
   )
+
+  function saveThumbnail(blogpost, thumbnailEncoded) {
+    const imageMimeTypes = ['image/jpeg', 'image/png']
+    if (thumbnailEncoded == null) return
+    const thumbnail = JSON.parse(thumbnailEncoded)
+    if (thumbnail != null && imageMimeTypes.includes(thumbnail.type)) {
+      blogpost.thumbnail = new Buffer.from(thumbnail.data, 'base64')
+      blogpost.thumbnailType = thumbnail.type
+    }
+  }
 
   async function getBlogPostBySlug(req, res, next) {
     try {

@@ -19,7 +19,7 @@ mongoose
   .catch((error) => console.error(error))
 
 const expressLayouts = require('express-ejs-layouts')
-app.use(express.urlencoded({ extended: false }))
+app.use(express.urlencoded({ limit: '200mb', extended: false }))
 app.use(methodOverride('_method'))
 
 app.set('view engine', 'ejs')
@@ -32,7 +32,7 @@ const db = mongoose.connection
 db.on('error', (error) => console.error(error))
 db.once('open', () => console.log('Connected to database'))
 
-app.use(express.json())
+app.use(express.json({ limit: '200mb' }))
 app.use(cors())
 
 const passport = require('passport')

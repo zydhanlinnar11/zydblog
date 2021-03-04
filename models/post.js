@@ -15,7 +15,11 @@ const blogPostSchema = new mongoose.Schema({
     required: true,
     default: Date.now,
   },
-  thumbnailLink: {
+  thumbnail: {
+    type: Buffer,
+    required: true,
+  },
+  thumbnailType: {
     type: String,
     required: true,
   },
@@ -51,6 +55,13 @@ blogPostSchema.pre('validate', function (next) {
   if (this.markdown)
     this.sanitizedHtml = dompurify.sanitize(marked(this.markdown))
   next()
+})
+
+blogPostSchema.virtual('thumbnailPath').get(function () {
+  if (this.thumbnail != null && this.thumbnailType != null)
+    return `data:${
+      this.thumbnailType
+    };charset=utf-8;base64,${this.thumbnail.toString('base64')}`
 })
 
 module.exports = mongoose.model('Blog Post', blogPostSchema)
