@@ -2,12 +2,17 @@ module.exports = function (checkAuthenticated) {
   const express = require('express')
   const router = express()
   const BlogPost = require('../../models/post')
+  const slugify = require('slugify')
+
+  async function isThereAnySlugConflict(slug) {
+    return (await BlogPost.findOne({ slug: slug })) != null
+  }
 
   function deleteMarkdownAndSanitizedHtml(blogpost) {
     return {
       title: blogpost.title,
       date: blogpost.date,
-      thumbnail: blogpost.thumbnail,
+      thumbnailPath: blogpost.thumbnailPath,
       description: blogpost.description,
       slug: blogpost.slug,
       author: blogpost.author,
@@ -26,7 +31,15 @@ module.exports = function (checkAuthenticated) {
 
   // Get one blog post content
   router.get('/:slug', getBlogPostBySlug, (req, res) => {
-    res.json(res.blogpost)
+    res.json({
+      title: res.blogpost.title,
+      date: res.blogpost.date,
+      thumbnailPath: res.blogpost.thumbnailPath,
+      description: res.blogpost.description,
+      slug: res.blogpost.slug,
+      author: res.blogpost.author,
+      sanitizedHtml: res.blogpost.sanitizedHtml,
+    })
   })
 
   // Create one
@@ -37,10 +50,16 @@ module.exports = function (checkAuthenticated) {
       description: req.body.description,
       markdown: req.body.markdown,
       author: req.body.author,
+      slug: slugify(req.body.title, {
+        lower: true,
+        strict: true,
+      }),
     })
     saveThumbnail(blogpost, req.body.thumbnail)
 
     try {
+      if (await isThereAnySlugConflict(blogpost.slug))
+        throw { message: 'Slug conflict' }
       const newPost = await blogpost.save()
       res.redirect(`${process.env.BLOG_LINK}/${newPost.slug}`)
     } catch (error) {
@@ -54,15 +73,22 @@ module.exports = function (checkAuthenticated) {
     checkAuthenticated,
     getBlogPostBySlug,
     async (req, res) => {
-      if (req.body.title != null) res.blogpost.title = req.body.title
-      if (req.body.thumbnail != null)
-        saveThumbnail(res.blogpost, req.body.thumbnail)
+      let isSlugConflict = false
+      if (req.body.title != null && res.blogpost.title != req.body.title) {
+        res.blogpost.title = req.body.title
+        res.blogpost.slug = slugify(req.body.title, {
+          lower: true,
+          strict: true,
+        })
+        if (await isThereAnySlugConflict(res.blogpost.slug))
+          isSlugConflict = true
+      }
       if (req.body.description != null)
         res.blogpost.description = req.body.description
       if (req.body.markdown != null) res.blogpost.markdown = req.body.markdown
-      if (req.body.author != null) res.blogpost.author = req.body.author
 
       try {
+        if (isSlugConflict) throw { message: 'Slug conflict' }
         const updatedBlogPost = await res.blogpost.save()
         res.redirect(`${process.env.BLOG_LINK}/${updatedBlogPost.slug}`)
       } catch (error) {

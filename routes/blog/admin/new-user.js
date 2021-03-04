@@ -4,6 +4,10 @@ module.exports = (checkAuthenticated) => {
   const router = express.Router()
   const bcrypt = require('bcrypt')
 
+  async function isThereAnyUsernameConflict(username) {
+    return (await User.findOne({ username: username })) != null
+  }
+
   router.get('/', checkAuthenticated, (req, res) => {
     res.render('new-user', {
       title: 'New User',
@@ -16,6 +20,8 @@ module.exports = (checkAuthenticated) => {
 
   router.post('/', async (req, res) => {
     try {
+      if (await isThereAnyUsernameConflict(req.body.username))
+        throw 'Username conflict'
       const hashedPassword = await bcrypt.hash(
         req.body.password,
         parseInt(process.env.SALT_ROUND)

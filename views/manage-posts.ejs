@@ -25,7 +25,7 @@
           <h5 class="card-title"><%= element.title %></h5>
           <p class="card-text"><%= element.description %></p>
           <div style="margin: auto" class="row">
-            <% if (element.author != currentUserName) { %>
+            <% if (element.author != currentUserID) { %>
             <a
               href="./edit-post/<%= element.slug %> "
               class="btn btn-primary col-12 disabled"

@@ -9,7 +9,7 @@ module.exports = (checkAuthenticated) => {
       blogName: process.env.BLOG_NAME,
       mainTitle: 'Create new post',
       article: new BlogPost(),
-      author: (await req.user).username,
+      author: (await req.user)._id,
       loggedIn: true,
     })
   })

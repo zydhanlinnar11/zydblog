@@ -49,6 +49,7 @@
   >
 <%= article.markdown %></textarea
   >
+  <% if (title === 'New Post') { %>
   <input
     style="height: 0; width: 0; visibility: hidden"
     value="<%= author %>"
@@ -57,5 +58,6 @@
     id="author"
     required
   />
+  <% } %>
   <br />
 </div>
