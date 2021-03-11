@@ -4,7 +4,6 @@ import LoadingAnimation from './LoadingAnimation'
 import NotAvailable from './NotAvailable'
 import ReactHtml from 'raw-html-react'
 import './Post.css'
-const BLOG_BACKEND_LINK = 'https://zydblog-server.herokuapp.com'
 
 class Post extends React.Component {
   constructor(props) {
@@ -16,7 +15,7 @@ class Post extends React.Component {
   }
 
   componentDidMount() {
-    fetch(`${BLOG_BACKEND_LINK}/blog/posts/${this.props.match.params.slug}`)
+    fetch(`/blog/posts/${this.props.match.params.slug}`)
       .then((res) => res.json())
       .then((data) => {
         this.setState({
