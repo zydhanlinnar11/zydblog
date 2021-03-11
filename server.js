@@ -1,6 +1,5 @@
 if (process.env.NODE_ENV !== 'production') require('dotenv').config()
 
-const cors = require('cors')
 const express = require('express')
 const app = express()
 const mongoose = require('mongoose')
@@ -26,14 +25,14 @@ app.set('view engine', 'ejs')
 app.set('views', __dirname + 'views')
 app.set('layout', 'layouts/layout')
 app.use(expressLayouts)
-app.use(express.static('public'))
+app.use('/blog/admin', express.static('public'))
+app.use('/blog', express.static('frontend/build'))
 
 const db = mongoose.connection
 db.on('error', (error) => console.error(error))
 db.once('open', () => console.log('Connected to database'))
 
 app.use(express.json({ limit: '200mb' }))
-app.use(cors())
 
 const passport = require('passport')
 const initializePassport = require('./routes/blog/passport-config')
@@ -73,7 +72,7 @@ function checkNotAuthenticated(req, res, next) {
 }
 
 app.get('/', async (req, res) => {
-  res.redirect('/blog/admin')
+  res.redirect('/blog')
 })
 
 const blogRouter = require('./routes/blog')
