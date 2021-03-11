@@ -5,12 +5,12 @@ import './index.css'
 
 ReactDOM.render(<App />, document.getElementById('root'))
 if (
-  localStorage.getItem('darkMode') == null ||
-  localStorage.getItem('darkMode') === 'false'
+  localStorage.getItem('darkMode') === 'false' ||
+  (localStorage.getItem('darkMode') == null &&
+    !(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark))')))
 )
   document.body.classList.add('light-mode')
 else {
-  localStorage.setItem('darkMode', 'false')
   document.body.classList.add('dark-mode')
 }
 

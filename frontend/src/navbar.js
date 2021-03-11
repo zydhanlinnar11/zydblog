@@ -6,8 +6,11 @@ const RESUME_URL = 'https://zydhanlinnar11.github.io/resume/'
 
 function isLightMode() {
   return (
-    localStorage.getItem('darkMode') == null ||
-    localStorage.getItem('darkMode') === 'false'
+    localStorage.getItem('darkMode') === 'false' ||
+    (localStorage.getItem('darkMode') == null &&
+      !(
+        window.matchMedia && window.matchMedia('(prefers-color-scheme: dark))')
+      ))
   )
 }
 
