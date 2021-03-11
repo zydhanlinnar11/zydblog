@@ -81,4 +81,8 @@ app.use(
   blogRouter(checkAuthenticated, checkNotAuthenticated, passport)
 )
 
+app.get('*', (req, res) => {
+  res.redirect('/blog/post/not-found')
+})
+
 app.listen(process.env.PORT || 1111)
