@@ -12,7 +12,7 @@ module.exports = (checkAuthenticated) => {
 
   const bucket = storage.bucket(process.env.BUCKET_URL)
 
-  router.get('/', (req, res) => {
+  router.get('/', checkAuthenticated, (req, res) => {
     res.render('add-image', {
       title: 'Add New Image',
       blogName: process.env.BLOG_NAME,
@@ -22,7 +22,7 @@ module.exports = (checkAuthenticated) => {
     })
   })
 
-  router.post('/', async (req, res) => {
+  router.post('/', checkAuthenticated, async (req, res) => {
     const finalFileName = await uploadImage(
       JSON.parse(req.body.image).data,
       req.body.filename
@@ -35,7 +35,7 @@ module.exports = (checkAuthenticated) => {
         req.body.attribution == null
           ? 'No attribution required.'
           : req.body.attribution,
-      path: `https://storage.googleapis.com/${process.env.BUCKET_URL}/${finalFileName}`,
+      path: `https://storage.googleapis.com/${process.env.BUCKET_URL}/${finalFileName}.webp`,
     })
 
     try {

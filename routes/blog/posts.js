@@ -60,7 +60,7 @@ module.exports = function (checkAuthenticated) {
       if (await isThereAnySlugConflict(blogpost.slug))
         throw { message: 'Slug conflict' }
       const newPost = await blogpost.save()
-      res.redirect(`${process.env.BLOG_LINK}/${newPost.slug}`)
+      res.redirect(`/blog/post/${newPost.slug}`)
     } catch (error) {
       res.status(400).json({ message: error.message })
     }
