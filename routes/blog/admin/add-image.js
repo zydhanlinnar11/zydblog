@@ -23,6 +23,7 @@ module.exports = (checkAuthenticated) => {
   })
 
   router.post('/', checkAuthenticated, async (req, res) => {
+    res.redirect('./')
     const finalFileName = await uploadImage(
       JSON.parse(req.body.image).data,
       req.body.filename
@@ -40,9 +41,8 @@ module.exports = (checkAuthenticated) => {
 
     try {
       await imageInfo.save()
-      res.redirect('./')
     } catch (error) {
-      res.redirect('./')
+      console.error(error)
     }
   })
 
