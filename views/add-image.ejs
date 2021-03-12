@@ -1,0 +1,55 @@
+<form action="/blog/admin/add-image" method="POST">
+  <div class="form-group">
+    <label for="filename">Name:</label>
+    <input
+      value="<%= image.filename %>"
+      class="form-control"
+      type="text"
+      name="filename"
+      id="filename"
+      placeholder="Input name here"
+      required
+    />
+  </div>
+
+  <div class="form-group">
+    <label for="description">Description:</label>
+    <input
+      value="<%= image.description %>"
+      class="form-control"
+      type="text"
+      name="description"
+      id="description"
+      placeholder="Input description here"
+      required
+    />
+  </div>
+
+  <div class="form-group">
+    <label for="attribution">Attribution:</label>
+    <textarea
+      class="form-control"
+      name="attribution"
+      id="attribution"
+      rows="5"
+      placeholder="Respect image owner!"
+    ></textarea>
+  </div>
+
+  <div class="form-group">
+    <label for="image">Upload here:</label>
+    <input type="file" name="image" id="image" class="filepond" required />
+  </div>
+
+  <div class="row">
+    <div class="col-4">
+      <a href="/blog/admin/dashboard" class="btn col-12 btn-danger">Cancel</a>
+    </div>
+    <div class="col-4">
+      <button type="reset" class="btn col-12 btn-warning">Reset</button>
+    </div>
+    <div class="col-4">
+      <button type="submit" class="btn col-12 btn-primary">Save</button>
+    </div>
+  </div>
+</form>

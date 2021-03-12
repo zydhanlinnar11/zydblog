@@ -1,12 +1,7 @@
 import './title-box.css'
 import React from 'react'
-import defaultBackground from './title-bg.webp'
 
-const TitleBox = ({
-  title = "This page isn't available",
-  background = defaultBackground,
-}) => {
-  if (background === 'noThumbnail') background = defaultBackground
+const TitleBox = ({ title = "This page isn't available", background }) => {
   return (
     <div
       style={{

@@ -24,12 +24,18 @@
   />
 </div>
 
-<% if (title === 'New Post' || article.cover == null) { %>
 <div class="form-group">
-  <label for="cover">Cover:</label>
-  <input type="file" name="cover" id="cover" class="filepond" required />
+  <label for="coverFilename">Cover File Name:</label>
+  <input
+    value="<%= article.coverFilename %>"
+    class="form-control"
+    type="text"
+    name="coverFilename"
+    id="coverFilename"
+    placeholder="Enter cover file name"
+    required
+  />
 </div>
-<% } %>
 
 <div class="form-group">
   <label for="markdown">Content (markdown):</label>

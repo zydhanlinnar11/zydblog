@@ -4,6 +4,19 @@ import LoadingAnimation from './LoadingAnimation'
 import NotAvailable from './NotAvailable'
 import ReactHtml from 'raw-html-react'
 import './Post.css'
+import defaultBg from './title-bg.webp'
+
+const STORAGE_URL = 'https://storage.googleapis.com/zydhan-web.appspot.com'
+
+function getScreenWidth() {
+  const screenWidths = [1366, 1920, 2560, 3840]
+  const currentWidth = window.innerWidth * window.devicePixelRatio
+  if (currentWidth >= screenWidths[screenWidths.length - 1])
+    return screenWidths[screenWidths.length - 1]
+  else
+    for (let i = 0; i < screenWidths.length; i++)
+      if (currentWidth <= screenWidths[i]) return screenWidths[i]
+}
 
 class Post extends React.Component {
   constructor(props) {
@@ -11,6 +24,9 @@ class Post extends React.Component {
     this.state = {
       title: '',
       content: '',
+      date: new Date(),
+      author: '',
+      background: defaultBg,
     }
   }
 
@@ -21,7 +37,10 @@ class Post extends React.Component {
         this.setState({
           title: data.title,
           content: data.sanitizedHtml,
-          coverPath: data.coverPath,
+          coverFilename: data.coverFilename,
+          background: `${STORAGE_URL}/${
+            data.coverFilename
+          }-${getScreenWidth()}.webp`,
           date: data.date,
           author: data.author,
         })
@@ -29,7 +48,7 @@ class Post extends React.Component {
   }
 
   render() {
-    const titleBoxBg = this.state.coverPath
+    const titleBoxBg = this.state.background
     const postTitle = this.state.title
     const postContent = this.state.content
     const postDate = this.state.date

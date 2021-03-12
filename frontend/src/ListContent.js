@@ -5,6 +5,23 @@ import TitleBox from './title-box'
 import LoadingAnimation from './LoadingAnimation'
 import { Link } from 'react-router-dom'
 import './ListContent.css'
+import titleBg from './title-bg.webp'
+
+const STORAGE_URL = 'https://storage.googleapis.com/zydhan-web.appspot.com'
+
+function getScreenDPI() {
+  const thumbnailScaleFactor = [1, 2, 3, 4]
+  const thumbnailDPI = ['mdpi', 'xhdpi', 'xxhdpi', 'xxxhdpi']
+
+  const currentScaleFactor = window.devicePixelRatio
+  if (
+    currentScaleFactor >= thumbnailScaleFactor[thumbnailScaleFactor.length - 1]
+  )
+    return thumbnailDPI[thumbnailDPI.length - 1]
+  else
+    for (let i = 0; i < thumbnailScaleFactor.length; i++)
+      if (currentScaleFactor <= thumbnailScaleFactor[i]) return thumbnailDPI[i]
+}
 
 async function getListContent() {
   const API_URL = '/blog/posts'
@@ -37,10 +54,11 @@ class ListContent extends React.Component {
   }
 
   render() {
-    const titleBox = <TitleBox title="Welcome to My Blog" />
+    const titleBox = (
+      <TitleBox title="Welcome to My Blog" background={titleBg} />
+    )
     const isContentLoaded = this.state.loaded
     const numberOfContents = this.state.items.length
-
     const contentAvailableLayout = (
       <div className="list-content">
         {this.state.items.map((item) => (
@@ -53,7 +71,9 @@ class ListContent extends React.Component {
               postTitle={item.title}
               postDate={item.date}
               postDesc={item.description}
-              postPic={item.thumbnailPath}
+              postPic={`${STORAGE_URL}/${
+                item.coverFilename
+              }-thumb-${getScreenDPI()}.webp`}
             />
           </Link>
         ))}

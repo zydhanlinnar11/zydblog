@@ -23,6 +23,9 @@ module.exports = (checkAuthenticated, checkNotAuthenticated, passport) => {
   const manageUsersRouter = require('./admin/manage-users')
   router.use('/manage-users', manageUsersRouter(checkAuthenticated))
 
+  const addImageRouter = require('./admin/add-image')
+  router.use('/add-image', addImageRouter(checkAuthenticated))
+
   router.get('/', checkAuthenticated, (req, res) => {
     res.redirect('/blog/admin/dashboard')
   })

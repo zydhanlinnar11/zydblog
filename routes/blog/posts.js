@@ -14,7 +14,7 @@ module.exports = function (checkAuthenticated) {
     return {
       title: blogpost.title,
       date: blogpost.date,
-      thumbnailPath: blogpost.thumbnailPath,
+      coverFilename: blogpost.coverFilename,
       description: blogpost.description,
       slug: blogpost.slug,
     }
@@ -35,7 +35,7 @@ module.exports = function (checkAuthenticated) {
     res.json({
       title: res.blogpost.title,
       date: res.blogpost.date,
-      coverPath: res.blogpost.coverPath,
+      coverFilename: res.blogpost.coverFilename,
       author: (await User.findById(res.blogpost.author)).username,
       sanitizedHtml: res.blogpost.sanitizedHtml,
     })
@@ -47,6 +47,7 @@ module.exports = function (checkAuthenticated) {
       title: req.body.title,
       date: Date.now(),
       description: req.body.description,
+      coverFilename: req.body.coverFilename,
       markdown: req.body.markdown,
       author: req.body.author,
       slug: slugify(req.body.title, {
@@ -54,8 +55,6 @@ module.exports = function (checkAuthenticated) {
         strict: true,
       }),
     })
-    await saveCover(blogpost, req.body.cover)
-    await saveThumbnail(blogpost, req.body.cover)
 
     try {
       if (await isThereAnySlugConflict(blogpost.slug))
@@ -111,32 +110,6 @@ module.exports = function (checkAuthenticated) {
       }
     }
   )
-
-  const WEBP_MIME = 'image/webp'
-  async function saveCover(blogpost, coverEncoded) {
-    const imageMimeTypes = ['image/jpeg', 'image/png']
-    const COVER_WIDTH = 2880 // 75% of 4K
-
-    if (coverEncoded == null) return
-    const cover = JSON.parse(coverEncoded)
-    if (cover != null && imageMimeTypes.includes(cover.type)) {
-      blogpost.cover = new Buffer.from(cover.data, 'base64')
-      blogpost.cover = new Buffer.from(
-        await sharp(blogpost.cover).webp().resize(COVER_WIDTH, null).toBuffer(),
-        'base64'
-      )
-      blogpost.coverType = WEBP_MIME
-    }
-  }
-
-  async function saveThumbnail(blogpost, cover) {
-    const THUMB_HEIGHT = 480 // 160px 3x upscaled for xxhdpi devices
-    blogpost.thumbnail = new Buffer.from(
-      await sharp(cover).webp().resize(null, THUMB_HEIGHT).toBuffer(),
-      'base64'
-    )
-    blogpost.thumbnailType = WEBP_MIME
-  }
 
   async function getBlogPostBySlug(req, res, next) {
     try {
