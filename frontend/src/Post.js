@@ -57,7 +57,7 @@ class Post extends React.Component {
     return (
       <main>
         <TitleBox
-          background={titleBoxBg}
+          background={postContent === undefined ? defaultBg : titleBoxBg}
           title={postTitle === '' ? 'Loading post...' : postTitle}
         />
         {postContent === undefined ? (

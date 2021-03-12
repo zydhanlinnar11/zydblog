@@ -83,13 +83,15 @@ module.exports = function (checkAuthenticated) {
           isSlugConflict = true
       }
 
+      if (req.body.coverFilename != null)
+        res.blogpost.coverFilename = req.body.coverFilename
       if (req.body.description != null)
         res.blogpost.description = req.body.description
       if (req.body.markdown != null) res.blogpost.markdown = req.body.markdown
       try {
         if (isSlugConflict) throw { message: 'Slug conflict' }
         const updatedBlogPost = await res.blogpost.save()
-        res.redirect(`${process.env.BLOG_LINK}/${updatedBlogPost.slug}`)
+        res.redirect(`/blog/post/${updatedBlogPost.slug}`)
       } catch (error) {
         res.status(400).json({ message: error.message })
       }
