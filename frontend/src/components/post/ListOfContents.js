@@ -1,11 +1,11 @@
 import React from 'react'
 import PostItem from './post-item'
-import NotAvailable from './NotAvailable'
-import TitleBox from './title-box'
-import LoadingAnimation from './LoadingAnimation'
+import NotAvailable from '../NotAvailable'
+import TitleBox from '../title-box'
+import LoadingAnimation from '../LoadingAnimation'
 import { Link } from 'react-router-dom'
-import './ListContent.css'
-import titleBg from './title-bg.webp'
+import '../../css/ListOfContents.css'
+import titleBg from '../../img/title-bg.webp'
 
 const STORAGE_URL = 'https://storage.googleapis.com/zydhan-web.appspot.com'
 
@@ -55,7 +55,7 @@ class ListContent extends React.Component {
 
   render() {
     const titleBox = (
-      <TitleBox title="Welcome to My Blog" background={titleBg} />
+      <TitleBox title="Welcome to My Blog" backgroundURL={titleBg} />
     )
     const isContentLoaded = this.state.loaded
     const numberOfContents = this.state.items.length

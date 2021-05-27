@@ -1,4 +1,4 @@
-import './post-item.css'
+import '../../css/post-item.css'
 import Button from '@material-ui/core/Button'
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 

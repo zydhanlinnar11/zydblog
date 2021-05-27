@@ -1,10 +1,10 @@
-import TitleBox from './title-box'
+import TitleBox from '../title-box'
 import React from 'react'
-import LoadingAnimation from './LoadingAnimation'
-import NotAvailable from './NotAvailable'
+import LoadingAnimation from '../LoadingAnimation'
+import NotAvailable from '../NotAvailable'
 import ReactHtml from 'raw-html-react'
-import './Post.css'
-import defaultBg from './title-bg.webp'
+import '../../css/Post.css'
+import defaultBg from '../../img/title-bg.webp'
 
 const STORAGE_URL = 'https://storage.googleapis.com/zydhan-web.appspot.com'
 
@@ -57,7 +57,7 @@ class Post extends React.Component {
     return (
       <main>
         <TitleBox
-          background={postContent === undefined ? defaultBg : titleBoxBg}
+          backgroundURL={postContent === undefined ? defaultBg : titleBoxBg}
           title={postTitle === '' ? 'Loading post...' : postTitle}
         />
         {postContent === undefined ? (

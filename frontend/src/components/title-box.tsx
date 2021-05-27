@@ -1,11 +1,16 @@
-import './title-box.css'
-import React from 'react'
+import '../css/title-box.css'
 
-const TitleBox = ({ title = "This page isn't available", background }) => {
+interface TitleBoxProps {
+  title: string
+  backgroundURL: string
+}
+
+const TitleBox = (props: TitleBoxProps) => {
+  const { title, backgroundURL } = props
   return (
     <div
       style={{
-        backgroundImage: `url(${background})`,
+        backgroundImage: `url(${backgroundURL})`,
         backgroundPosition: 'center',
         backgroundSize: 'cover',
       }}
