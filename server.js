@@ -25,8 +25,8 @@ app.set('view engine', 'ejs')
 app.set('views', __dirname + 'views')
 app.set('layout', 'layouts/layout')
 app.use(expressLayouts)
-app.use('/blog/admin', express.static('public'))
-app.use('/blog', express.static('frontend/build'))
+app.use('/admin', express.static('public'))
+app.use('/', express.static('frontend/build'))
 
 const db = mongoose.connection
 db.on('error', (error) => console.error(error))
@@ -51,11 +51,11 @@ app.use(
 app.use(passport.initialize())
 app.use(passport.session())
 
-const LOGIN_PAGE = '/blog/admin/login'
+const LOGIN_PAGE = '/admin/login'
 app.post(
   LOGIN_PAGE,
   passport.authenticate('local', {
-    successRedirect: '/blog/admin',
+    successRedirect: '/admin',
     failureRedirect: LOGIN_PAGE,
     failureFlash: true,
   })
@@ -67,22 +67,19 @@ function checkAuthenticated(req, res, next) {
 }
 
 function checkNotAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) return res.redirect('/blog/admin')
+  if (req.isAuthenticated()) return res.redirect('/admin')
   next()
 }
 
 app.get('/', async (req, res) => {
-  res.redirect('/blog')
+  res.redirect('/')
 })
 
 const blogRouter = require('./routes/blog')
-app.use(
-  '/blog',
-  blogRouter(checkAuthenticated, checkNotAuthenticated, passport)
-)
+app.use('/', blogRouter(checkAuthenticated, checkNotAuthenticated, passport))
 
 app.get('*', (req, res) => {
-  res.redirect('/blog/post/not-found')
+  res.redirect('/post/not-found')
 })
 
 app.listen(process.env.PORT || 1111)

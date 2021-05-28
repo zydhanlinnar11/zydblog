@@ -60,7 +60,7 @@ module.exports = function (checkAuthenticated) {
       if (await isThereAnySlugConflict(blogpost.slug))
         throw { message: 'Slug conflict' }
       const newPost = await blogpost.save()
-      res.redirect(`/blog/post/${newPost.slug}`)
+      res.redirect(`/post/${newPost.slug}`)
     } catch (error) {
       res.status(400).json({ message: error.message })
     }
@@ -91,7 +91,7 @@ module.exports = function (checkAuthenticated) {
       try {
         if (isSlugConflict) throw { message: 'Slug conflict' }
         const updatedBlogPost = await res.blogpost.save()
-        res.redirect(`/blog/post/${updatedBlogPost.slug}`)
+        res.redirect(`/post/${updatedBlogPost.slug}`)
       } catch (error) {
         res.status(400).json({ message: error.message })
       }
@@ -106,7 +106,7 @@ module.exports = function (checkAuthenticated) {
     async (req, res) => {
       try {
         await res.blogpost.remove()
-        res.redirect('/blog/admin/manage-posts')
+        res.redirect('/admin/manage-posts')
       } catch (error) {
         res.status(500).json({ message: error.message })
       }

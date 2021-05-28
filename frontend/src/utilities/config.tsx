@@ -1,13 +1,48 @@
-interface IBlogConfig {
-  blogName: string
-  customFooterText?: string
+import defaultTitleBoxBackground from '../img/title-bg.webp'
+
+interface BlogOptionalConfig {
+  customRightFooterText?: string
+  customHomeHeaderTitle?: string
 }
 
-const blogConfig: IBlogConfig = {
-  blogName: "Zydhan's Blog",
+class BlogConfig {
+  private blogName: string
+  private blogOptionalConfig: BlogOptionalConfig
+  private titleBoxDefaultBackground: string
+
+  constructor(
+    blogName: string,
+    titleBoxDefaultBackground: string,
+    blogOptionalConfig: BlogOptionalConfig = {}
+  ) {
+    this.blogName = blogName
+    this.blogOptionalConfig = blogOptionalConfig
+    this.titleBoxDefaultBackground = titleBoxDefaultBackground
+  }
+
+  getBlogName(): string {
+    return this.blogName
+  }
+
+  getRightFooterText(): string {
+    if (this.blogOptionalConfig.customRightFooterText)
+      return this.blogOptionalConfig.customRightFooterText
+    return 'Created with React'
+  }
+
+  getHomeHeaderTitle(): string {
+    if (this.blogOptionalConfig.customHomeHeaderTitle)
+      return this.blogOptionalConfig.customHomeHeaderTitle
+    return this.getBlogName()
+  }
+
+  getTitleBoxDefaultBackground(): string {
+    return this.titleBoxDefaultBackground
+  }
 }
 
-const getBlogName = () => blogConfig.blogName
-const getCustomFooterText = () => blogConfig.customFooterText
+const blogConfig = new BlogConfig("Zydhan's Blog", defaultTitleBoxBackground, {
+  customHomeHeaderTitle: "Welcome to Zydhan's Blog",
+})
 
-export default { getBlogName, getCustomFooterText }
+export default blogConfig

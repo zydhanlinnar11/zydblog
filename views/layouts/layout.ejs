@@ -32,8 +32,8 @@
       defer
     ></script>
     <script src="https://unpkg.com/filepond/dist/filepond.js" defer></script>
-    <script src="/blog/admin/javascripts/fileUpload.js" defer></script>
-    <link rel="stylesheet" href="/blog/admin/style.css" />
+    <script src="/admin/javascripts/fileUpload.js" defer></script>
+    <link rel="stylesheet" href="/admin/style.css" />
   </head>
   <body>
     <div id="navbar-container">
@@ -41,14 +41,12 @@
         <h1><%= title %></h1>
         <nav>
           <div class="nav-button">
-            <a class="nav-button-text" href="/blog/admin/dashboard"
-              >Dashboard</a
-            >
+            <a class="nav-button-text" href="/admin/dashboard">Dashboard</a>
           </div>
           <% if (loggedIn) { %>
           <form
             style="padding: 0"
-            action="/blog/admin/logout?_method=DELETE"
+            action="/admin/logout?_method=DELETE"
             method="POST"
           >
             <button type="submit" class="nav-button">

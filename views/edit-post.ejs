@@ -1,11 +1,9 @@
-<form action="/blog/posts/<%= article.slug %>?_method=PATCH " method="POST">
+<form action="/posts/<%= article.slug %>?_method=PATCH " method="POST">
   <%- include('./_post_form_fields.ejs') %>
 
   <div class="row">
     <div class="col-4">
-      <a href="/blog/admin/manage-posts" class="btn col-12 btn-danger"
-        >Cancel</a
-      >
+      <a href="/admin/manage-posts" class="btn col-12 btn-danger">Cancel</a>
     </div>
     <div class="col-4"></div>
     <div class="col-4">

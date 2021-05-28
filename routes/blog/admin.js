@@ -30,7 +30,7 @@ module.exports = (checkAuthenticated, checkNotAuthenticated, passport) => {
   router.use('/manage-images', manageImagesRouter(checkAuthenticated))
 
   router.get('/', checkAuthenticated, (req, res) => {
-    res.redirect('/blog/admin/dashboard')
+    res.redirect('/admin/dashboard')
   })
 
   router.delete('/logout', (req, res) => {

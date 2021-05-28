@@ -34,7 +34,7 @@
             >
             <div style="height: 8px" class="col-xxl-2"></div>
             <form
-              action="/blog/posts/<%= element.slug %>?_method=DELETE"
+              action="/posts/<%= element.slug %>?_method=DELETE"
               method="POST"
               class="col-12"
               style="padding: 0"
@@ -55,7 +55,7 @@
             >
             <div style="height: 8px" class="col-xxl-2"></div>
             <form
-              action="/blog/posts/<%= element.slug %>?_method=DELETE"
+              action="/posts/<%= element.slug %>?_method=DELETE"
               method="POST"
               class="col-12"
               style="padding: 0"
@@ -64,9 +64,7 @@
             </form>
             <% } %>
             <div style="height: 8px" class="col-xxl-2"></div>
-            <a
-              href="/blog/post/<%= element.slug %> "
-              class="btn btn-success col-12"
+            <a href="/post/<%= element.slug %> " class="btn btn-success col-12"
               >Open post</a
             >
           </div>
