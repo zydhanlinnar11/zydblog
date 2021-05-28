@@ -71,10 +71,6 @@ function checkNotAuthenticated(req, res, next) {
   next()
 }
 
-app.get('/', async (req, res) => {
-  res.redirect('/')
-})
-
 const blogRouter = require('./routes/blog')
 app.use('/', blogRouter(checkAuthenticated, checkNotAuthenticated, passport))
 
