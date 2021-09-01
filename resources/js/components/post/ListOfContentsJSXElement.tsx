@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import IPostService from "./IPostService";
+import IPostService from "../../contract/IPostService";
 import TitleBox from "../title-box";
 import { Link } from "react-router-dom";
 import PostItem from "./PostItem";
@@ -7,14 +7,14 @@ import LoadingAnimation from "../LoadingAnimation";
 import NotAvailable from "../NotAvailable";
 import config from "../../utilities/config";
 import "../../../css/ListOfContents.css";
-import IPost from "./IPost";
+import Post from "../../model/Post";
 
 interface ListOfContentsLayoutProps {
     postService: IPostService;
 }
 
 function ListOfContentsLayout(props: ListOfContentsLayoutProps) {
-    const emptyPosts: IPost[] = [];
+    const emptyPosts: Post[] = [];
     const { postService } = props;
     const [posts, setPosts] = useState(() => emptyPosts);
     const [ListOfContentsLayoutJsx, setListOfContentsLayoutJsx] = useState(
@@ -41,7 +41,7 @@ function ListOfContentsLayout(props: ListOfContentsLayoutProps) {
                             title={post.getTitle()}
                             localDate={post.getLocalDateString()}
                             description={post.getDescription()}
-                            thumbnailURL={post.getThumbnailURL()}
+                            thumbnailURL={""}
                         />
                     </Link>
                 ))}
