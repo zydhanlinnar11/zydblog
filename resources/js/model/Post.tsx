@@ -39,22 +39,16 @@ class Post {
         return this.coverFileName;
     }
 
-    getDescription(): string {
-        if (this.postOptionalAttributes?.description)
-            return this.postOptionalAttributes.description;
-        else return "No description available";
+    getDescription(): string | undefined {
+        return this.postOptionalAttributes?.description;
     }
 
-    getSlug(): string {
-        if (this.postOptionalAttributes?.slug)
-            return this.postOptionalAttributes.slug;
-        return "not-found";
+    getSlug(): string | undefined {
+        return this.postOptionalAttributes?.slug;
     }
 
-    getAuthor(): string {
-        if (this.postOptionalAttributes?.author)
-            return this.postOptionalAttributes.author;
-        return "Unknown User";
+    getAuthor(): string | undefined {
+        return this.postOptionalAttributes?.author;
     }
 
     getSanitizedHtml(): string {
@@ -63,7 +57,8 @@ class Post {
         return "<h1>No content available</h1>";
     }
 
-    getURL(): string {
+    getURL(): string | undefined {
+        if (!this.getSlug()) return this.getSlug();
         return `/post/${this.getSlug()}`;
     }
 }
