@@ -18,11 +18,11 @@ class CreatePostsTable extends Migration
             $table->uuid('user_id');        
             $table->foreign('user_id')->references('id')->on('users');
             $table->string('title');
-            $table->string('coverFilename');
+            $table->string('cover_file_name');
             $table->text('description');
             $table->text('markdown');
-            $table->text('slug');
-            $table->text('sanitized-html');
+            $table->text('slug')->unique();
+            $table->text('sanitized_html');
             $table->timestamps();
         });
     }
