@@ -32,11 +32,19 @@ class FileController extends Controller
     
     public function get_by_name(string $name)
     {
-        return DB::table('files')
-            ->select([
-                'file_name',
-                'url',
-            ])->where('file_name', '=', $name)
-            ->get();
+        try {
+            $result = DB::table('files')
+                ->select([
+                    'file_name',
+                    'url',
+                ])->where('file_name', '=', $name)
+                ->get();
+            if(!$result) {
+                return response()->json(['message' => 'File not found.'], 404);
+            }
+            return $result[0];
+        } catch(Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
     }
 }

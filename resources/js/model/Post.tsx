@@ -3,6 +3,7 @@ interface PostOptionalAttributes {
     slug?: string;
     author?: string;
     sanitizedHtml?: string;
+    coverUrl?: string;
 }
 
 class Post {
@@ -60,6 +61,10 @@ class Post {
     getURL(): string | undefined {
         if (!this.getSlug()) return this.getSlug();
         return `/post/${this.getSlug()}`;
+    }
+
+    getCoverURL(): string | undefined {
+        return this.postOptionalAttributes?.coverUrl;
     }
 }
 

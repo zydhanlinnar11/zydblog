@@ -8,6 +8,7 @@ import NotAvailable from "../NotAvailable";
 import config from "../../utilities/config";
 import "../../../css/ListOfContents.css";
 import Post from "../../model/Post";
+import blogConfig from "../../utilities/config";
 
 interface ListOfContentsLayoutProps {
     postService: IPostService;
@@ -34,14 +35,19 @@ function ListOfContentsLayout(props: ListOfContentsLayoutProps) {
                 {posts.map((post) => (
                     <Link
                         style={{ textDecoration: "none" }}
-                        to={post.getURL()}
+                        to={post.getURL() || ""}
                         key={post.getSlug()}
                     >
                         <PostItem
                             title={post.getTitle()}
                             localDate={post.getLocalDateString()}
-                            description={post.getDescription()}
-                            thumbnailURL={""}
+                            description={
+                                post.getDescription() || "No description"
+                            }
+                            thumbnailURL={
+                                post.getCoverURL() ||
+                                blogConfig.getTitleBoxDefaultBackground()
+                            }
                         />
                     </Link>
                 ))}

@@ -8,21 +8,30 @@ import NotAvailable from "../NotAvailable";
 import ReactHtml from "raw-html-react";
 import User from "../../model/User";
 import IUserService from "../../contract/IUserService";
+import IFileService from "../../contract/IFileService";
+import File from "../../model/File";
+import blogConfig from "../../utilities/config";
 
 interface PostPageJSXElementProps {
     slug: string;
     postService: IPostService;
     userService: IUserService;
+    fileService: IFileService;
 }
 
 const PostPageJSXElement = (props: PostPageJSXElementProps) => {
     const unknownUser = new User("unknown", "Unknown User", "unknown");
     const loadingPost = new Post("Loading post...", "", "");
     const blankPost = new Post("This post isn't available", "", "");
-    const { slug, postService, userService } = props;
+    const defaultCover = new File(
+        "default-cover",
+        blogConfig.getTitleBoxDefaultBackground()
+    );
+    const { slug, postService, userService, fileService } = props;
     const [post, setPost] = useState((): Post => loadingPost);
     const [user, setUser] = useState((): User => unknownUser);
     const [content, setContent] = useState(() => <LoadingAnimation />);
+    const [cover, setCover] = useState(() => defaultCover);
 
     useEffect(() => {
         postService.getPost(slug, (fetchedPost: Post | undefined) => {
@@ -41,12 +50,16 @@ const PostPageJSXElement = (props: PostPageJSXElementProps) => {
     useEffect(() => {
         if (post == loadingPost) return;
         userService.getUser(
-            post.getAuthor(),
+            post.getAuthor() || "",
             (fetchedUser: User | undefined) => {
                 if (!fetchedUser) return;
                 setUser(fetchedUser);
             }
         );
+        fileService.getFile(post.getCoverFileName(), (fetchedCover) => {
+            if (!fetchedCover) return;
+            setCover(fetchedCover);
+        });
     }, [post]);
 
     useEffect(() => {
@@ -71,7 +84,7 @@ const PostPageJSXElement = (props: PostPageJSXElementProps) => {
 
     return (
         <main>
-            <TitleBox backgroundURL={"null"} title={post.getTitle()} />
+            <TitleBox backgroundURL={cover.getUrl()} title={post.getTitle()} />
             {content}
         </main>
     );

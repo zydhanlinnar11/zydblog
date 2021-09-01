@@ -9,14 +9,22 @@ class PostController extends Controller
 {
     public function home_posts()
     {
-        return DB::table('posts')
+        return DB::table('posts', 'p')
             ->select([
-                'title',
-                'slug',
-                'created_at',
-                'cover_file_name',
-                'description'
-            ])->orderByDesc('created_at')
+                'p.title',
+                'p.slug',
+                'p.created_at',
+                'p.description',
+                'f.cover_url'
+            ])->leftJoinSub(
+                DB::table('files', 'f')
+                ->select(['url as cover_url', 'file_name']),
+                'f',
+                'f.file_name',
+                '=',
+                'p.cover_file_name'
+            )
+            ->orderByDesc('created_at')
             ->get();
     }
 

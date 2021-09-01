@@ -1,8 +1,3 @@
-interface responseObjectModel {
-    name: string;
-    user_name: string;
-}
-
 class User {
     private name: string;
     private user_name: string;
@@ -15,7 +10,7 @@ class User {
     }
 
     getId() {
-        return this.name;
+        return this.user_id;
     }
 
     getName() {
