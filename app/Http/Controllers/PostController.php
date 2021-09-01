@@ -37,7 +37,7 @@ class PostController extends Controller
             }
             return $result[0];
         } catch(Exception $e) {
-                return response()->json(['message' => $e->getMessage()], 404);
+                return response()->json(['message' => $e->getMessage()], 500);
         }
     }
 }
