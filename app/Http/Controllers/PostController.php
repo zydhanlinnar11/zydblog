@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
@@ -21,7 +22,8 @@ class PostController extends Controller
 
     public function get_by_slug(string $slug)
     {
-        return DB::table('posts')
+        try {
+            $result = DB::table('posts')
             ->select([
                 'title',
                 'created_at',
@@ -30,5 +32,12 @@ class PostController extends Controller
                 'user_id',
             ])->where('slug', '=', $slug)
             ->get();
+            if(!$result) {
+                return response()->json(['message' => 'Post not found.'], 404);
+            }
+            return $result[0];
+        } catch(Exception $e) {
+                return response()->json(['message' => $e->getMessage()], 404);
+        }
     }
 }
