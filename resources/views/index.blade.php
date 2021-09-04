@@ -28,7 +28,9 @@
   </head>
   <body>
     <div id="root"></div>
-    <script src="{{ asset('js/index.js') }}" defer></script>
+    <script src="/js/manifest.js" defer></script>
+    <script src="/js/vendor.js" defer></script>
+    <script src="/js/index.js" defer></script>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.

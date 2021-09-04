@@ -1,12 +1,5 @@
 const mix = require("laravel-mix");
-mix.ts("resources/js/index.tsx", "public/js").react();
-
-mix.webpackConfig({
-    output: {
-        publicPath: "/public/",
-        chunkFilename: "js/chunks.[name].js",
-    },
-});
+mix.ts("resources/js/index.tsx", "public/js").extract(["react"]);
 
 /*
  |--------------------------------------------------------------------------
