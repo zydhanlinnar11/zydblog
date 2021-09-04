@@ -13,7 +13,7 @@ interface singleResponseModel {
     title: string;
     created_at: string;
     cover_file_name: string;
-    sanitized_html: string;
+    markdown: string;
     user_id: string;
 }
 
@@ -49,7 +49,7 @@ class APIv2PostService implements IPostService {
             callback(
                 new Post(post.title, post.created_at, post.cover_file_name, {
                     author: post.user_id,
-                    sanitizedHtml: post.sanitized_html,
+                    markdown: post.markdown,
                 })
             );
         } catch (error) {

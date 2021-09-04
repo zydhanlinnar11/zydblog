@@ -5,12 +5,13 @@ import "../../../css/Post.css";
 import TitleBox from "../title-box";
 import LoadingAnimation from "../LoadingAnimation";
 import NotAvailable from "../NotAvailable";
-import ReactHtml from "raw-html-react";
 import User from "../../model/User";
 import IUserService from "../../contract/IUserService";
 import IFileService from "../../contract/IFileService";
 import File from "../../model/File";
 import blogConfig from "../../utilities/config";
+import ReactMarkdown from "react-markdown";
+import SyntaxHighlighter from "../renderer/SyntaxHighlighter";
 
 interface PostPageJSXElementProps {
     slug: string;
@@ -75,7 +76,10 @@ const PostPageJSXElement = (props: PostPageJSXElementProps) => {
                         {post.getLocalDateString()}
                     </p>
                     <hr />
-                    <ReactHtml html={post.getSanitizedHtml()} />
+                    <ReactMarkdown
+                        children={post.getMarkdown()}
+                        renderers={{ code: SyntaxHighlighter }}
+                    />
                 </div>
             </div>
         );

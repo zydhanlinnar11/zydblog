@@ -36,7 +36,7 @@ class PostController extends Controller
                 'title',
                 'created_at',
                 'cover_file_name',
-                'sanitized_html',
+                'markdown',
                 'user_id',
             ])->where('slug', '=', $slug)
             ->get();

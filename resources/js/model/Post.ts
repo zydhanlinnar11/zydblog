@@ -2,7 +2,7 @@ interface PostOptionalAttributes {
     description?: string;
     slug?: string;
     author?: string;
-    sanitizedHtml?: string;
+    markdown?: string;
     coverUrl?: string;
 }
 
@@ -52,9 +52,9 @@ class Post {
         return this.postOptionalAttributes?.author;
     }
 
-    getSanitizedHtml(): string {
-        if (this.postOptionalAttributes?.sanitizedHtml)
-            return this.postOptionalAttributes.sanitizedHtml;
+    getMarkdown(): string {
+        if (this.postOptionalAttributes?.markdown)
+            return this.postOptionalAttributes.markdown;
         return "<h1>No content available</h1>";
     }
 
