@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\TokenController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -28,3 +29,7 @@ Route::get('/post/{slug:string}', [PostController::class, 'get_by_slug']);
 Route::get('/user/{id:uuid}', [UserController::class, 'get_by_id']);
 
 Route::get('/file/{name:string}', [FileController::class, 'get_by_name']);
+
+Route::post('/login', [TokenController::class, 'login']);
+
+Route::middleware('auth:sanctum')->delete('/logout', [TokenController::class, 'logout']);
