@@ -25,7 +25,6 @@ class TokenController extends Controller
 
         if(!$user) {
             return response()->json([
-                'status' => false,
                 'message' => 'Unauthenticated.'
             ], 401);
         }
@@ -33,7 +32,6 @@ class TokenController extends Controller
         $token = $user->createToken('web-auth');
 
         return response()->json([
-            'status' => true,
             'message' => 'Authorized.',
             'token' => $token->plainTextToken
         ]);
@@ -44,7 +42,6 @@ class TokenController extends Controller
         $request->user()->currentAccessToken()->delete();
 
         return response()->json([
-            'status' => true,
             'message' => 'Logged out.'
         ]);
     }
