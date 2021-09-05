@@ -10,10 +10,10 @@ const PostPage = lazy(() => import("./page/PostPage"));
 
 function App() {
     return (
-        <Suspense fallback={LoadingAnimation()}>
-            <Router>
-                <div className="App">
-                    <NavbarLayout />
+        <div className="App">
+            <NavbarLayout />
+            <Suspense fallback={LoadingAnimation()}>
+                <Router>
                     <div className="content">
                         <Switch>
                             <Route path="/" exact component={ListOfContents} />
@@ -24,10 +24,10 @@ function App() {
                             />
                         </Switch>
                     </div>
-                    <Footer />
-                </div>
-            </Router>
-        </Suspense>
+                </Router>
+            </Suspense>
+            <Footer />
+        </div>
         // <div></div>
     );
 }
