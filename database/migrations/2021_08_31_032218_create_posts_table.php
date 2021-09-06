@@ -21,7 +21,7 @@ class CreatePostsTable extends Migration
             $table->string('cover_file_name');
             $table->text('description');
             $table->text('markdown');
-            $table->text('slug')->unique();
+            $table->string('slug')->unique();
             $table->text('sanitized_html');
             $table->timestamps();
         });
