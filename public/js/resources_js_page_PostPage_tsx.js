@@ -1,59 +1,6 @@
 "use strict";
 (self["webpackChunk"] = self["webpackChunk"] || []).push([["resources_js_page_PostPage_tsx"],{
 
-/***/ "./resources/js/components/NotAvailable.tsx":
-/*!**************************************************!*\
-  !*** ./resources/js/components/NotAvailable.tsx ***!
-  \**************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-/* harmony import */ var _fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @fortawesome/react-fontawesome */ "./node_modules/@fortawesome/react-fontawesome/index.es.js");
-/* harmony import */ var _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @fortawesome/free-solid-svg-icons */ "./node_modules/@fortawesome/free-solid-svg-icons/index.es.js");
-var __assign = undefined && undefined.__assign || function () {
-  __assign = Object.assign || function (t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-      s = arguments[i];
-
-      for (var p in s) {
-        if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
-      }
-    }
-
-    return t;
-  };
-
-  return __assign.apply(this, arguments);
-};
-
-
-
-
-
-function NotAvailable(props) {
-  var text = props.text;
-  return (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", __assign({
-    className: "icon-only-div"
-  }, {
-    children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_1__.FontAwesomeIcon, {
-      className: "middle-icon",
-      icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_2__.faBan
-    }, void 0), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("h4", __assign({
-      className: "middle-text"
-    }, {
-      children: text
-    }), void 0)]
-  }), void 0);
-}
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (NotAvailable);
-
-/***/ }),
-
 /***/ "./resources/js/components/post/PostPageJSXElement.tsx":
 /*!*************************************************************!*\
   !*** ./resources/js/components/post/PostPageJSXElement.tsx ***!
@@ -1165,6 +1112,54 @@ var APIv2UserService = function () {
             return [3
             /*break*/
             , 4];
+
+          case 4:
+            return [2
+            /*return*/
+            ];
+        }
+      });
+    });
+  };
+
+  APIv2UserService.prototype.getAuthenticatedUser = function () {
+    return __awaiter(this, void 0, void 0, function () {
+      var response, json, error_2;
+      return __generator(this, function (_a) {
+        switch (_a.label) {
+          case 0:
+            _a.trys.push([0, 3,, 4]);
+
+            return [4
+            /*yield*/
+            , fetch("/api/user", {
+              headers: {
+                Authorization: "Bearer " + localStorage.getItem("token"),
+                Accept: "application/json"
+              }
+            })];
+
+          case 1:
+            response = _a.sent();
+            return [4
+            /*yield*/
+            , response.json()];
+
+          case 2:
+            json = _a.sent();
+            if (response.status == 401) return [2
+            /*return*/
+            , null];
+            return [2
+            /*return*/
+            , new _model_User__WEBPACK_IMPORTED_MODULE_0__.default(json.id, json.name, json.username)];
+
+          case 3:
+            error_2 = _a.sent();
+            console.error(error_2);
+            return [2
+            /*return*/
+            , null];
 
           case 4:
             return [2
