@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
@@ -37,6 +38,7 @@ class PostController extends Controller
                 'created_at',
                 'cover_file_name',
                 'markdown',
+                'description',
                 'user_id',
             ])->where('slug', '=', $slug)
             ->get();
