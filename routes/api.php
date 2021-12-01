@@ -24,12 +24,18 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('/posts', [PostController::class, 'home_posts']);
 
+Route::middleware('auth:sanctum')->post('/posts', [PostController::class, 'create_new']);
+
 Route::get('/post/{slug:string}', [PostController::class, 'get_by_slug']);
+
+Route::middleware('auth:sanctum')->patch('/post/{slug:string}', [PostController::class, 'patch_by_slug']);
 
 Route::get('/user/{id:uuid}', [UserController::class, 'get_by_id']);
 
 Route::get('/file/{name:string}', [FileController::class, 'get_by_name']);
 
 Route::post('/login', [TokenController::class, 'login']);
+
+Route::post('/register', [TokenController::class, 'register']);
 
 Route::middleware('auth:sanctum')->delete('/logout', [TokenController::class, 'logout']);

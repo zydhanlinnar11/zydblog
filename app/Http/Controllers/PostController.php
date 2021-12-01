@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
@@ -48,6 +50,63 @@ class PostController extends Controller
             return $result[0];
         } catch(Exception $e) {
                 return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function patch_by_slug(Request $request, string $slug)
+    {
+        if(!$request->user()->admin) abort(403);
+        try {
+            $post = Post::where('slug', $slug)->first();
+
+            if($request->has('title')) {
+                $post->title = $request->input('title');
+                $post->slug = Str::slug($post->title);
+            }
+            
+            if($request->has('description')) {
+                $post->description = $request->input('description');
+            }
+            
+            if($request->has('markdown')) {
+                $post->markdown = $request->input('markdown');
+            }
+            
+            $post->save();
+
+            return response()->json(['message' => 'Successfully edit post.']);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function create_new(Request $request)
+    {
+        $user = $request->user();
+        if(!$user->admin) abort(403);
+        try {
+            $post = new Post();
+            $post->user_id = $user->id;
+            $post->cover_file_name = 'gambar-biner';
+
+            if($request->has('title')) {
+                $post->title = $request->input('title');
+                $post->slug = Str::slug($post->title);
+            }
+            
+            if($request->has('description')) {
+                $post->description = $request->input('description');
+            }
+            
+            if($request->has('markdown')) {
+                $post->markdown = $request->input('markdown');
+            }
+            
+            $post->save();
+
+            return response()->json(['message' => 'Successfully add post.']);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
         }
     }
 }
