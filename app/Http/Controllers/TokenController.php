@@ -9,11 +9,11 @@ use Illuminate\Support\Facades\Hash;
 
 class TokenController extends Controller
 {
-    private function authenticate(Request $request): ?User
+    private function authenticate(string $email, string $password): ?User
     {
-        $user = User::where('email', $request->input('email'))->firstOrFail();
+        $user = User::where('email', $email)->first();
 
-        if (!Hash::check($request->input('password'), $user->password)) {
+        if (!$user || !Hash::check($password, $user->password)) {
             return null;
         }
         
@@ -22,20 +22,19 @@ class TokenController extends Controller
 
     function login(Request $request): \Illuminate\Http\JsonResponse
     {
-        $user = $this->authenticate($request);
+        $email = $request->input('email');
+        $password = $request->input('password');
 
-        if(!$user) {
-            return response()->json([
-                'message' => 'Unauthenticated.'
-            ], 401);
-        }
+        if(!trim($email)) return response()->json(['message' => "Email can't be empty."], 401);
+        if(!trim($password)) return response()->json(['message' => "Password can't be empty."], 401);
+
+        $user = $this->authenticate($email, $password);
+
+        if(!$user) return response()->json(['message' => 'Wrong email or password.'], 401);
 
         $token = $user->createToken('web-auth');
 
-        return response()->json([
-            'message' => 'Authenticated.',
-            'token' => $token->plainTextToken
-        ]);
+        return response()->json(['message' => 'Authenticated.','token' => $token->plainTextToken]);
     }
 
     function register(Request $request): \Illuminate\Http\JsonResponse
