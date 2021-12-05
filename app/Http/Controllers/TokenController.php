@@ -22,15 +22,22 @@ class TokenController extends Controller
 
     function login(Request $request): \Illuminate\Http\JsonResponse
     {
-        $email = $request->input('email');
-        $password = $request->input('password');
+        try {
+            $request->validate([
+                'email' => 'email|required|exists:App\Models\User,email',
+                'password' => 'required',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            throw $e;
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => "Internal server error. Please try again later.",
+            ], 500);
+        }
+        
+        $user = $this->authenticate($request->input('email'), $request->input('password'));
 
-        if(!trim($email)) return response()->json(['message' => "Email can't be empty."], 401);
-        if(!trim($password)) return response()->json(['message' => "Password can't be empty."], 401);
-
-        $user = $this->authenticate($email, $password);
-
-        if(!$user) return response()->json(['message' => 'Wrong email or password.'], 401);
+        if(!$user) return response()->json(['message' => 'Wrong password.'], 401);
 
         $token = $user->createToken('web-auth');
 
@@ -39,30 +46,23 @@ class TokenController extends Controller
 
     function register(Request $request): \Illuminate\Http\JsonResponse
     {
-        if(trim($request->input('name')) === '') {
-            return response()->json([
-                'message' => "Name can't be empty.",
-            ], 400);
-        }
-        if(trim($request->input('email')) === '') {
-            return response()->json([
-                'message' => "Email can't be empty.",
-            ], 400);
-        }
-        if(trim($request->input('password')) === '') {
-            return response()->json([
-                'message' => "Password can't be empty.",
-            ], 400);
-        }
-
         try {
+            $request->validate([
+                'name' => 'required',
+                'email' => 'email|required|unique:App\Models\User,email',
+                'username' => 'required|unique:App\Models\User,username',
+                'password' => 'required|confirmed',
+                'password_confirmation' => 'required',
+            ]);
             User::create([
                 'username' => $request->input('username'),
                 'name' => $request->input('name'),
                 'email' => $request->input('email'),
                 'password' => Hash::make($request->input('password')),
             ]);
-        } catch(Exception $e) {
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            throw $e;
+        } catch (\Exception $e) {
             return response()->json([
                 'message' => "Internal server error. Please try again later.",
             ], 500);
