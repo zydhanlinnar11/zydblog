@@ -30,6 +30,8 @@ Route::get('/post/{slug:string}', [PostController::class, 'get_by_slug']);
 
 Route::middleware('auth:sanctum')->patch('/post/{slug:string}', [PostController::class, 'patch_by_slug']);
 
+Route::middleware('auth:sanctum')->delete('/post/{slug:string}', [PostController::class, 'delete']);
+
 Route::get('/user/{id:uuid}', [UserController::class, 'get_by_id']);
 
 Route::get('/file/{name:string}', [FileController::class, 'get_by_name']);

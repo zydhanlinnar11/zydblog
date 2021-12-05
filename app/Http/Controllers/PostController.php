@@ -57,7 +57,7 @@ class PostController extends Controller
     {
         if(!$request->user()->admin) abort(403);
         try {
-            $post = Post::where('slug', $slug)->first();
+            $post = Post::where('slug', $slug)->firstOrFail();
 
             if($request->has('title')) {
                 $post->title = $request->input('title');
@@ -74,9 +74,27 @@ class PostController extends Controller
             
             $post->save();
 
-            return response()->json(['message' => 'Successfully edit post.']);
-        } catch (\Exception $e) {
-            return response()->json(['message' => $e->getMessage()], 500);
+            return response()->json(['message' => 'Successfully edit post.', 'new_slug' => $post->slug]);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException) {
+            abort(404, 'Post not found.');
+        } catch(\Exception $e) {
+            return response()->json(['message' => 'Internal server error.'], 500);
+        }
+    }
+
+    public function delete(Request $request, string $slug)
+    {
+        if(!$request->user()->admin) abort(403);
+        try {
+            $post = Post::where('slug', $slug)->firstOrFail();
+            
+            $post->delete();
+
+            return response()->json(['message' => 'Successfully delete post.']);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException) {
+            abort(404, 'Post not found.');
+        } catch(\Exception $e) {
+            return response()->json(['message' => 'Internal server error.'], 500);
         }
     }
 
@@ -104,7 +122,7 @@ class PostController extends Controller
             
             $post->save();
 
-            return response()->json(['message' => 'Successfully add post.']);
+            return response()->json(['message' => 'Successfully add post.', 'slug' => $post->slug], 201);
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }
