@@ -18,7 +18,8 @@ class PostController extends Controller
                 'p.slug',
                 'p.created_at',
                 'p.description',
-                'f.cover_url'
+                'f.cover_url',
+                'p.user_id',
             ])->leftJoinSub(
                 DB::table('files', 'f')
                 ->select(['url as cover_url', 'file_name']),
