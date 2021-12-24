@@ -18,7 +18,7 @@ class SocialProviderController extends Controller
 
         if(!$user) {
             $user = User::create([
-                'username' => $social_user->getNickname(),
+                'username' => $social_user->getNickname() ?? $social_user->getEmail(),
                 'name' => $social_user->getName(),
                 'email' => $social_user->getEmail(),
                 'password' => Hash::make(Str::random()),
