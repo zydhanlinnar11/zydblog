@@ -24,6 +24,13 @@ class Post extends Model
     public $incrementing = false;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['title', 'slug', 'description', 'markdown', 'user_id', 'created_at', 'updated_at', 'cover_file_name'];
+
+    /**
      * The "booted" method of the model.
      *
      * @return void
@@ -35,5 +42,17 @@ class Post extends Model
                 $post['id'] = (string) \Illuminate\Support\Str::uuid();
             }
         });
+    }
+
+    /**
+     * Retrieve the model for a bound value.
+     *
+     * @param  mixed  $value
+     * @param  string|null  $field
+     * @return \Illuminate\Database\Eloquent\Model|null
+     */
+    public function resolveRouteBinding($value, $field = null)
+    {
+        return $this->where('slug', $value)->firstOrFail();
     }
 }

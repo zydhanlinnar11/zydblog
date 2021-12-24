@@ -22,19 +22,24 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/posts', [PostController::class, 'home_posts']);
+Route::apiResources([
+    'posts' => PostController::class,
+    'files' => FileController::class,
+]);
 
-Route::middleware('auth:sanctum')->post('/posts', [PostController::class, 'create_new']);
+// Route::get('/posts', [PostController::class, 'home_posts']);
 
-Route::get('/post/{slug:string}', [PostController::class, 'get_by_slug']);
+// Route::middleware('auth:sanctum')->post('/posts', [PostController::class, 'create_new']);
 
-Route::middleware('auth:sanctum')->patch('/post/{slug:string}', [PostController::class, 'patch_by_slug']);
+// Route::get('/post/{slug:string}', [PostController::class, 'get_by_slug']);
 
-Route::middleware('auth:sanctum')->delete('/post/{slug:string}', [PostController::class, 'delete']);
+// Route::middleware('auth:sanctum')->patch('/post/{slug:string}', [PostController::class, 'patch_by_slug']);
+
+// Route::middleware('auth:sanctum')->delete('/post/{slug:string}', [PostController::class, 'delete']);
 
 Route::get('/user/{id:uuid}', [UserController::class, 'get_by_id']);
 
-Route::get('/file/{name:string}', [FileController::class, 'get_by_name']);
+// Route::get('/file/{name:string}', [FileController::class, 'get_by_name']);
 
 Route::post('/login', [TokenController::class, 'login']);
 
