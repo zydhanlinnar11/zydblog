@@ -21,6 +21,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('/', function() { return response()->redirectTo(env('BLOG_URL', 'https://blog.zydhan.xyz')); });
+
 Route::get('/auth/{social_provider}/redirect', [SocialProviderController::class, 'redirect']);
 Route::get('/auth/{social_provider}/callback', [SocialProviderController::class, 'callback']);
 
