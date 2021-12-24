@@ -12,14 +12,13 @@ class PostController extends Controller
 {
     public function home_posts()
     {
-        return DB::table('posts', 'p')
+        try {
+            return DB::table('posts', 'p')
             ->select([
                 'p.title',
                 'p.slug',
                 'p.created_at',
-                'p.description',
                 'f.cover_url',
-                'p.user_id',
             ])->leftJoinSub(
                 DB::table('files', 'f')
                 ->select(['url as cover_url', 'file_name']),
@@ -30,6 +29,9 @@ class PostController extends Controller
             )
             ->orderByDesc('created_at')
             ->get();
+        } catch (Exception $e) {
+            return response()->json('INTERNAL_SERVER_ERROR', 500);
+        }
     }
 
     public function get_by_slug(string $slug)
