@@ -23,7 +23,7 @@ class SocialProviderController extends Controller
             ]);
         }
         
-        return response()->redirectTo(env('BLOG_URL'))->cookie(
+        return response()->redirectTo(env('BLOG_URL', 'https://blog.zydhan.xyz'))->cookie(
             'token',
             $user->generate_access_token()->plainTextToken,
             0,
