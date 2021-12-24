@@ -39,7 +39,8 @@ class TokenController extends Controller
 
         if(!$user) return response()->json(['message' => 'Wrong password.'], 401);
 
-        $token = $user->createToken('web-auth');
+        if($user->admin) $token = $user->createToken('web-auth', ['create-post', 'update-post', 'delete-post']);
+        else $token = $user->createToken('web-auth', []);
 
         return response()->json(['message' => 'Authenticated.','token' => $token->plainTextToken]);
     }
