@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\SocialProvider;
 use App\Models\User;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Str;
@@ -11,6 +12,7 @@ use Illuminate\Support\Str;
 class SocialProviderController extends Controller
 {
     function callback(SocialProvider $social_provider) {
+        Cookie::expire('token');
         $social_user = Socialite::driver($social_provider->name)->stateless()->user();
         $user = User::where('email', $social_user->getEmail())->first();
 

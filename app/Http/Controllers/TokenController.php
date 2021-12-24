@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Hash;
 
 class TokenController extends Controller
@@ -73,6 +74,7 @@ class TokenController extends Controller
 
     function logout(Request $request): \Illuminate\Http\JsonResponse
     {
+        Cookie::expire('token');
         $request->user()->currentAccessToken()->delete();
 
         return response()->json([
