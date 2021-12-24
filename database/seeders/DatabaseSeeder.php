@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\SocialProvider;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -20,5 +21,8 @@ class DatabaseSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
+
+        (new SocialProvider(['name' => 'github']))->save();
+        (new SocialProvider(['name' => 'google']))->save();
     }
 }

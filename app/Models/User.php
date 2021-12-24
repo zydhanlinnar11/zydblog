@@ -70,4 +70,9 @@ class User extends Authenticatable
             }
         });
     }
+
+    public function generate_access_token() {
+        if($this->admin) return $this->createToken('web-auth', ['create-post', 'update-post', 'delete-post']);
+        return $this->createToken('web-auth', []);
+    } 
 }

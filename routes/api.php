@@ -1,9 +1,8 @@
 <?php
 
-use App\Http\Controllers\FileController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\SocialProviderController;
 use App\Http\Controllers\TokenController;
-use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,9 +21,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('/auth/{social_provider}/redirect', [SocialProviderController::class, 'redirect']);
+Route::get('/auth/{social_provider}/callback', [SocialProviderController::class, 'callback']);
+
 Route::apiResources([
     'posts' => PostController::class,
-    'files' => FileController::class,
 ]);
 
 // Route::get('/posts', [PostController::class, 'home_posts']);
