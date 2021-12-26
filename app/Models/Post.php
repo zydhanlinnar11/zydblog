@@ -9,6 +9,11 @@ class Post extends Model
 {
     use HasFactory;
 
+    // Blog post visibility
+    public static $VISIBILITY_VISIBLE = '1';
+    public static $VISIBILITY_UNLISTED = '2';
+    public static $VISIBILITY_PRIVATE = '3';
+
     /**
      * The data type of the auto-incrementing ID.
      *
@@ -28,7 +33,7 @@ class Post extends Model
      *
      * @var array
      */
-    protected $fillable = ['title', 'slug', 'description', 'markdown', 'user_id', 'created_at', 'updated_at', 'cover_file_name'];
+    protected $fillable = ['title', 'slug', 'description', 'markdown', 'user_id', 'created_at', 'updated_at', 'cover_file_name', 'visibility'];
 
     /**
      * The "booted" method of the model.

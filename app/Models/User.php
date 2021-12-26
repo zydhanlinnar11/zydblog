@@ -72,7 +72,7 @@ class User extends Authenticatable
     }
 
     public function generate_access_token() {
-        if($this->admin) return $this->createToken('web-auth', ['create-post', 'update-post', 'delete-post']);
+        if($this->admin) return $this->createToken('web-auth', ['create-post', 'update-post', 'delete-post', 'view-unlisted-post', 'view-private-post']);
         return $this->createToken('web-auth', []);
     } 
 }

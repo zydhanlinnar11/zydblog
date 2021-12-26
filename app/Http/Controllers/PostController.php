@@ -8,6 +8,7 @@ use App\Http\Resources\PostCollection;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class PostController extends Controller
@@ -25,11 +26,17 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
-        return PostResource::collection(Post::orderByDesc('created_at')->get());
+        $user = $request->user('sanctum');
+        $query = Post::where('visibility', Post::$VISIBILITY_VISIBLE);
+        if($user?->tokenCan('view-unlisted-post')) $query->orWhere('visibility', Post::$VISIBILITY_UNLISTED);
+        if($user?->tokenCan('view-private-post')) $query->orWhere('visibility', Post::$VISIBILITY_PRIVATE);
+
+        return PostResource::collection($query->orderByDesc('created_at')->get());
     }
 
     /**
@@ -49,11 +56,15 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  Post  $post
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Post $post)
+    public function show(Request $request, Post $post)
     {
+        $user = $request->user('sanctum');
+        if(!$user?->tokenCan('view-private-post') && $post->visibility == Post::$VISIBILITY_PRIVATE)
+            abort(404); 
         return new PostResource($post);
     }
 
