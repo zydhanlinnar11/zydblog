@@ -94,7 +94,7 @@ class PostController extends Controller
             'markdown' => 'required|max:65535',
             'cover_file_name' => 'required',
             'updated_at' => 'required',
-            'visibility' => 'required|numeric|min:1|max:3',
+            'visibility' => 'numeric|min:1|max:3',
         ]);
 
         $post->update($validated_data);

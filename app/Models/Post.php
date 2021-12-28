@@ -60,4 +60,12 @@ class Post extends Model
     {
         return $this->where('slug', $value)->firstOrFail();
     }
+    
+    /**
+     * Get the comments for the blog post.
+     */
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }

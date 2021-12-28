@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\SocialProviderController;
 use App\Http\Controllers\TokenController;
@@ -28,6 +29,7 @@ Route::get('/auth/{social_provider}/callback', [SocialProviderController::class,
 
 Route::apiResources([
     'posts' => PostController::class,
+    'posts.comments' => CommentController::class,
 ]);
 
 // Route::get('/posts', [PostController::class, 'home_posts']);

@@ -33,7 +33,7 @@ class StorePostRequest extends FormRequest
             'cover_file_name' => 'required',
             'created_at' => 'required',
             'updated_at' => 'required',
-            'visibility' => 'required|numeric|min:1|max:3',
+            'visibility' => 'numeric|min:1|max:3',
         ];
     }
 
