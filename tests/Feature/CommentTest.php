@@ -67,7 +67,7 @@ class CommentTest extends TestCase
             "content" => 'Test comment 1'
         ]);
         $response->assertOk();
-        $response->assertJsonStructure(['comment']);
+        $response->assertJsonStructure(['content', 'user_id', 'post_id', 'id', 'updated_at', 'created_at']);
         $this->assertTrue(Post::where('slug', 'test-post')->first() != null);
 
         $post->delete();
@@ -180,7 +180,7 @@ class CommentTest extends TestCase
             "content" => 'Test comment 1'
         ]);
 
-        $response = $this->putJson('/comments/'.$comment->id, [
+        $response = $this->patchJson('/comments/'.$comment->id, [
             "content" => 'Test comment 1 updated'
         ]);
         $response->assertUnauthorized();
@@ -213,7 +213,7 @@ class CommentTest extends TestCase
             "content" => 'Test comment 1'
         ]);
 
-        $response = $this->putJson('/comments/'.$comment->id, [
+        $response = $this->patchJson('/comments/'.$comment->id, [
             "content" => 'Test comment 1 updated'
         ]);
         $response->assertForbidden();
