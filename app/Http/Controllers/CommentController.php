@@ -27,7 +27,7 @@ class CommentController extends Controller
      */
     public function index(Post $post)
     {
-        return CommentResource::collection($post->comments()->get());
+        return CommentResource::collection($post->comments()->orderByDesc('created_at')->get());
     }
 
     /**
@@ -50,9 +50,9 @@ class CommentController extends Controller
             'post_id' => 'required|exists:posts,id',
         ]);
 
-        Comment::create($validated_data);
+        $comment = Comment::create($validated_data);
 
-        return response()->json('true');
+        return response()->json(new CommentResource($comment));
     }
 
     /**
@@ -84,7 +84,7 @@ class CommentController extends Controller
 
         $comment->update($validated_data);
 
-        return response()->json('true');
+        return response()->json(new CommentResource($comment));
     }
 
     /**

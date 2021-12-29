@@ -47,7 +47,7 @@ class CommentTest extends TestCase
         $user->delete();
     }
 
-    public function test_can_add_comment()
+    public function test_can_add_comment_and_return_new_comment()
     {
         Post::where('slug', 'test-post')->delete();
         
@@ -67,6 +67,7 @@ class CommentTest extends TestCase
             "content" => 'Test comment 1'
         ]);
         $response->assertOk();
+        $response->assertJsonStructure(['comment']);
         $this->assertTrue(Post::where('slug', 'test-post')->first() != null);
 
         $post->delete();
@@ -118,7 +119,7 @@ class CommentTest extends TestCase
             "content" => 'Test comment 1'
         ]);
 
-        $response = $this->deleteJson('/posts/test-post/comments/'.$comment->id);
+        $response = $this->deleteJson('/comments/'.$comment->id);
         $response->assertUnauthorized();
 
         $comment->delete();
@@ -149,7 +150,7 @@ class CommentTest extends TestCase
             "content" => 'Test comment 1'
         ]);
 
-        $response = $this->deleteJson('/posts/test-post/comments/'.$comment->id);
+        $response = $this->deleteJson('/comments/'.$comment->id);
         $response->assertForbidden();
 
         $comment->delete();
@@ -179,7 +180,7 @@ class CommentTest extends TestCase
             "content" => 'Test comment 1'
         ]);
 
-        $response = $this->putJson('/posts/test-post/comments/'.$comment->id, [
+        $response = $this->putJson('/comments/'.$comment->id, [
             "content" => 'Test comment 1 updated'
         ]);
         $response->assertUnauthorized();
@@ -212,7 +213,7 @@ class CommentTest extends TestCase
             "content" => 'Test comment 1'
         ]);
 
-        $response = $this->putJson('/posts/test-post/comments/'.$comment->id, [
+        $response = $this->putJson('/comments/'.$comment->id, [
             "content" => 'Test comment 1 updated'
         ]);
         $response->assertForbidden();
@@ -246,7 +247,7 @@ class CommentTest extends TestCase
             "content" => 'Test comment 1'
         ]);
 
-        $response = $this->deleteJson('/posts/test-post/comments/'.$comment->id);
+        $response = $this->deleteJson('/comments/'.$comment->id);
         $response->assertOk();
 
         $comment->delete();

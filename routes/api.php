@@ -29,8 +29,12 @@ Route::get('/auth/{social_provider}/callback', [SocialProviderController::class,
 
 Route::apiResources([
     'posts' => PostController::class,
-    'posts.comments' => CommentController::class,
 ]);
+
+Route::get('/posts/{post}/comments', [CommentController::class, 'index']);
+Route::post('/posts/{post}/comments', [CommentController::class, 'store']);
+Route::patch('/comments/{comment}', [CommentController::class, 'update']);
+Route::delete('/comments/{comment}', [CommentController::class, 'destroy']);
 
 // Route::get('/posts', [PostController::class, 'home_posts']);
 
