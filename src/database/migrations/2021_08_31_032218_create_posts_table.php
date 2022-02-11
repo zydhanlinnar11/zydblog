@@ -14,7 +14,7 @@ class CreatePostsTable extends Migration
     public function up()
     {
         Schema::create('posts', function (Blueprint $table) {
-            $table->uuid('id');
+            $table->uuid('id')->primary();
             $table->uuid('user_id');        
             $table->foreign('user_id')->references('id')->on('users');
             $table->string('title');
@@ -22,7 +22,7 @@ class CreatePostsTable extends Migration
             $table->text('description');
             $table->text('markdown');
             $table->string('slug')->unique();
-            $table->text('sanitized_html');
+            $table->enum('visibility', ['1', '2', '3'])->default('1');
             $table->timestamps();
         });
     }
