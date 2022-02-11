@@ -1,3 +1,0 @@
-FROM zydhanlinnar11/laravel-docker-image:latest
-
-RUN docker-php-ext-install pdo_mysql
