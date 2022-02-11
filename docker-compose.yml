@@ -10,6 +10,7 @@ services:
             - zydblog
         volumes:
             - ./database/:/var/lib/mysql/
+            - ./mysql/config:/etc/mysql/conf.d
     zydblog-backend:
         container_name: zydblog-backend
         image: zydhanlinnar11/zydblog-backend
