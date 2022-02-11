@@ -1,16 +1,28 @@
 version: '3.8'
 services:
+    mysql:
+        container_name: zydblog-db
+        image: mysql
+        env_file: env/mysql.env
+        command: --default-authentication-plugin=mysql_native_password
+        restart: always
+        networks:
+            - zydblog
     zydblog-backend:
         container_name: zydblog-backend
-        image: zydhanlinnar11/laravel-docker-image
+        image: zydhanlinnar11/zydblog-backend
         volumes:
             - ./src:/var/www/html
-        env_file: .env
+        env_file: env/nginx-proxy.env
         extra_hosts:
             - "host.docker.internal:host-gateway"
         networks:
             - nginx-proxy-network
+            - zydblog
+        depends_on:
+            - mysql
 
 networks:
     nginx-proxy-network:
         external: true
+    zydblog:
