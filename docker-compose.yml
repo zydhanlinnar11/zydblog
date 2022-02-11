@@ -8,6 +8,8 @@ services:
         restart: always
         networks:
             - zydblog
+        volumes:
+            - ./database/:/var/lib/mysql/
     zydblog-backend:
         container_name: zydblog-backend
         image: zydhanlinnar11/zydblog-backend
@@ -26,3 +28,6 @@ networks:
     nginx-proxy-network:
         external: true
     zydblog:
+
+volumes:
+    mysql:
