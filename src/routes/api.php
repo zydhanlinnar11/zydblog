@@ -4,7 +4,9 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\SocialProviderController;
 use App\Http\Controllers\TokenController;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
@@ -50,8 +52,8 @@ Route::delete('/comments/{comment}', [CommentController::class, 'destroy']);
 
 // Route::get('/file/{name:string}', [FileController::class, 'get_by_name']);
 
-Route::post('/login', [TokenController::class, 'login']);
+Route::get('/login', [TokenController::class, 'login']);
 
 Route::post('/register', [TokenController::class, 'register']);
 
-Route::middleware('auth:sanctum')->delete('/logout', [TokenController::class, 'logout']);
+Route::middleware('auth:api')->delete('/logout', [TokenController::class, 'logout']);
