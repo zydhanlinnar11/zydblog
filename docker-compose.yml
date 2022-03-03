@@ -1,17 +1,17 @@
 version: '3.8'
 services:
-    zydblog-backend:
-        container_name: zydblog-backend
-        image: zydhanlinnar11/zydblog-backend
-        volumes:
-            - ./src:/var/www/html
-            - ./database/:/database/
-        env_file: env/nginx-proxy.env
-        extra_hosts:
-            - "host.docker.internal:host-gateway"
-        networks:
-            - nginx-proxy-network
+  zydblog-backend:
+    container_name: zydblog-backend
+    image: zydhanlinnar11/laravel-docker-image
+    volumes:
+      - ./src:/var/www/html
+      - ./database/:/database/
+    env_file: env/nginx-proxy.env
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    networks:
+      - nginx-proxy-network
 
 networks:
-    nginx-proxy-network:
-        external: true
+  nginx-proxy-network:
+    external: true
