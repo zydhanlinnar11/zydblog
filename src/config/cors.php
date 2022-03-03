@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['https://blog.zydhan.xyz', 'http://zydblog.local'],
+    'allowed_origins' => ['https://blog.zydhan.xyz', 'https://blog.dev.zydhan.xyz'],
 
     'allowed_origins_patterns' => [],
 
